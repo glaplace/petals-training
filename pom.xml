@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>fr.ausy.traing.petals</groupId>
+    <artifactId>petals-esb-training-parent</artifactId>
+
+    <version>1.0.0-SNAPSHOT</version>
+
+    <description>POM parent du projet</description>
+    <packaging>pom</packaging>
+
+    <scm>
+        <connection>scm:git:https://github.com/glaplace/petals-training.git</connection>
+        <developerConnection>scm:git:https://github.com/glaplace/petals-training.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <properties>
+       <slf4j.version>1.7.30</slf4j.version>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java-version>1.8</java-version>
+        <java-short-version>8</java-short-version>
+        <maven.compiler.source>${java-version}</maven.compiler.source>
+        <maven.compiler.target>${java-version}</maven.compiler.target>
+        <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
+        <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
+      <!-- Permet la configuration des noms des su / sa -->
+        <dollar>$</dollar>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Tests unitaires -->
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>3.21.0</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+  <dependency>
+  </dependency>
+ <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>petals-maven-plugin</artifactId>
+                    <groupId>org.ow2.petals</groupId>
+                    <version>3.2.0</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <jbiDirectory>src/main/resources/jbi</jbiDirectory>
+                      <verbose>true</verbose>
+                        <downloadAndPackageWsdlResources>true</downloadAndPackageWsdlResources>
+                        <serviceUnitNameMappingInSA>${dollar}${dollar}{artifactId}-${dollar}${dollar}{version.major}.${dollar}${dollar}{version.minor}</serviceUnitNameMappingInSA>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>
