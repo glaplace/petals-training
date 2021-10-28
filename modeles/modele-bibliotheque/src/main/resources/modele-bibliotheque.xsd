@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema
+    targetNamespace="http://ausy.fr/training/petals/modele/biblotheque/1.0"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:modele="http://ausy.fr/training/petals/modele/biblotheque/1.0"
+    elementFormDefault="qualified">
+
+    <xsd:complexType name="Utilisateur">
+        <xsd:annotation>
+            <xsd:documentation>Utilisateur de la bibliothèque</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="utilisateur_id" type="xsd:int"/>
+            <xsd:element name="nom" type="xsd:string"/>
+            <xsd:element name="prenom" type="xsd:string"/>
+            <xsd:element name="courriel" type="xsd:string"/>
+            <xsd:element name="actif" type="xsd:boolean"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:element name="utilisateur" type="modele:Utilisateur"/>
+
+    <xsd:complexType name="Livre">
+        <xsd:annotation>
+            <xsd:documentation>Un livre de la bibliothèque</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="livre-id" type="xsd:int" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>Identifiant du livre, peux être facultatif lorsqu'il ne provient pas de la base de données.</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="titre" type="xsd:string"/>
+            <xsd:element name="resume" type="xsd:string"/>
+            <xsd:element name="nb-page" type="xsd:int"/>
+            <xsd:element name="isbn" type="xsd:string"/>
+            <xsd:element name="auteur" type="xsd:string"/>
+            <xsd:element name="langue" type="xsd:string"/>
+            <xsd:element name="annee-publication" type="xsd:int" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:element name="livre" type="modele:Livre"/>
+
+    <xsd:complexType name="Pret">
+        <xsd:annotation>
+            <xsd:documentation>Pret d'un livre à un utilisateur</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="pret-id" type="xsd:int"/>
+            <xsd:element name="utilisateur" type="modele:Utilisateur"/>
+            <xsd:element name="livre" type="modele:Livre"/>
+            <xsd:element name="date-pret" type="xsd:date"/>
+            <xsd:element name="duree-pret" type="xsd:int"/>
+            <xsd:element name="rendu" type="xsd:boolean" default="false"/>
+            <xsd:element name="nb-relance" type="xsd:int" default="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>

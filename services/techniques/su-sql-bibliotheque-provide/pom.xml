@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>parent-techniques</artifactId>
+        <groupId>fr.ausy.traing.petals.services.techniques</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>su-sql-bibliotheque-provide</artifactId>
+    <packaging>jbi-service-unit</packaging>
+    <description>Configuration BC-SQL pour accéder à la base de donnée bibliothèque</description>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <artifactId>petals-bc-sql</artifactId>
+            <groupId>org.ow2.petals</groupId>
+            <type>jbi-component</type>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <!-- Nettoyer les fichiers dezippés via le maven-dependency-plugin -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${basedir}/src/main/resources/jbi</directory>
+                            <includes>
+                                <include>SQLInterface.wsdl</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <artifactId>petals-bc-sql</artifactId>
+                                    <groupId>org.ow2.petals</groupId>
+                                    <version>${petals-bc-sql.version}</version>
+                                    <outputDirectory>${basedir}/src/main/resources/jbi</outputDirectory>
+                                    <includes>SQLInterface.wsdl</includes>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.ow2.petals</groupId>
+                <artifactId>petals-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>

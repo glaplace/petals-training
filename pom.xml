@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!--
+ Reprise de celui du dpt35
+ -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -11,6 +14,12 @@
     <version>1.0.0-SNAPSHOT</version>
 
     <description>POM parent du projet</description>
+
+    <modules>
+        <module>modeles</module>
+        <module>services</module>
+    </modules>
+
     <packaging>pom</packaging>
 
     <scm>
@@ -20,32 +29,421 @@
     </scm>
 
     <properties>
-       <slf4j.version>1.7.30</slf4j.version>
-      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <slf4j.version>1.7.30</slf4j.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java-version>1.8</java-version>
         <java-short-version>8</java-short-version>
         <maven.compiler.source>${java-version}</maven.compiler.source>
         <maven.compiler.target>${java-version}</maven.compiler.target>
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
         <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
-      <!-- Permet la configuration des noms des su / sa -->
+        <jvnet.jaxb2.version>0.11.1</jvnet.jaxb2.version>
+        <!-- Permet la configuration des noms des su / sa -->
         <dollar>$</dollar>
+
+        <!-- Version des composants petals -->
+        <!-- Version des composants Petals -->
+        <petals-bc-quartz.version>1.6.0</petals-bc-quartz.version>
+        <petals-bc-filetransfer.version>5.0.1</petals-bc-filetransfer.version>
+        <petals-bc-mail.version>4.1.0</petals-bc-mail.version>
+        <petals-bc-rest.version>2.3.0</petals-bc-rest.version>
+        <petals-bc-rest-junit.version>${petals-bc-rest.version}</petals-bc-rest-junit.version>
+        <petals-bc-sftp.version>1.9.1</petals-bc-sftp.version>
+        <petals-bc-soap.version>5.0.1</petals-bc-soap.version>
+        <petals-bc-sql.version>1.7.2</petals-bc-sql.version>
+        <petals-se-camel.version>1.2.1</petals-se-camel.version>
+        <!-- The version of SE Flowable is driven by 'petals-se-flowable.version.base'. Add 'SNAPSHOT'
+         to 'petals-se-flowable.version' to use a SNAPSHOT version -->
+        <petals-se-flowable.version.base>1.3.0</petals-se-flowable.version.base>
+        <petals-se-flowable.version>${petals-se-flowable.version.base}</petals-se-flowable.version>
+        <petals-se-flowable-junit.version>${petals-se-flowable.version.base}</petals-se-flowable-junit.version>
+        <flowable.groupId>org.ow2.petals.flowable</flowable.groupId>
+        <flowable.version>6.4.2-PETALS-0</flowable.version>
+
+        <petals-se-mapping.version>1.1.0</petals-se-mapping.version>
+        <petals-se-pojo.version>2.6.0</petals-se-pojo.version>
+
+        <!-- On utilise les mêmes versions des 3PPs que celles embarquées avec Petals -->
+        <easywsdl.version>2.7.0</easywsdl.version>
+        <camel.version>2.20.3</camel.version>
+        <cxf.version>3.2.5</cxf.version>
+        <cxf.se-flowable.version>3.3.2</cxf.se-flowable.version>
+        <jetty.se-flowable.version>9.4.18.v20190429</jetty.se-flowable.version>
+        <slf4j.version>1.7.28</slf4j.version>
+        <!-- Configuration permettant de palier les divergences de version du au se flowable  -->
+        <spring.version>5.1.16</spring.version>
+        <jackson.version>2.9.9</jackson.version>
+        <httpcomponents.version>4.4.9</httpcomponents.version>
+
+        <!-- Propriétés controlant les enforcer-rules -->
+        <maven-enforcer-plugin.rules.bannedDependencies>true</maven-enforcer-plugin.rules.bannedDependencies>
+        <maven-enforcer-plugin.rules.dependency>true</maven-enforcer-plugin.rules.dependency>
+        <maven-enforcer-plugin.rules.upperBound>true</maven-enforcer-plugin.rules.upperBound>
+        <maven-enforcer-plugin.rules.maven>true</maven-enforcer-plugin.rules.maven>
+
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <artifactId>petals-bc-filetransfer</artifactId>
+                <groupId>org.ow2.petals</groupId>
+                <scope>provided</scope>
+                <type>jbi-component</type>
+                <version>${petals-bc-filetransfer.version}</version>
+            </dependency>
+
+            <dependency>
+                <artifactId>petals-bc-mail</artifactId>
+                <groupId>org.ow2.petals</groupId>
+                <scope>provided</scope>
+                <type>jbi-component</type>
+                <version>${petals-bc-mail.version}</version>
+            </dependency>
+
+            <dependency>
+                <artifactId>petals-bc-rest</artifactId>
+                <groupId>org.ow2.petals</groupId>
+                <scope>provided</scope>
+                <type>jbi-component</type>
+                <version>${petals-bc-rest.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.ow2.petals</groupId>
+                <artifactId>petals-bc-rest-junit</artifactId>
+                <version>${petals-bc-rest-junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <artifactId>petals-bc-sftp</artifactId>
+                <groupId>org.ow2.petals</groupId>
+                <scope>provided</scope>
+                <type>jbi-component</type>
+                <version>${petals-bc-sftp.version}</version>
+            </dependency>
+
+            <dependency>
+                <artifactId>petals-bc-soap</artifactId>
+                <groupId>org.ow2.petals</groupId>
+                <scope>provided</scope>
+                <type>jbi-component</type>
+                <version>${petals-bc-soap.version}</version>
+            </dependency>
+
+            <dependency>
+                <artifactId>petals-bc-sql</artifactId>
+                <groupId>org.ow2.petals</groupId>
+                <scope>provided</scope>
+                <type>jbi-component</type>
+                <version>${petals-bc-sql.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.ow2.petals</groupId>
+                <artifactId>petals-se-camel</artifactId>
+                <scope>provided</scope>
+                <type>jbi-component</type>
+                <version>${petals-se-camel.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.ow2.petals</groupId>
+                <artifactId>camel-petals</artifactId>
+                <scope>provided</scope>
+                <version>${petals-se-camel.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>org.slf4j</artifactId>
+                        <groupId>slf4j-api</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.ow2.petals</groupId>
+                <artifactId>petals-se-camel-junit</artifactId>
+                <scope>test</scope>
+                <version>${petals-se-camel.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.camel</groupId>
+                <artifactId>camel-core</artifactId>
+                <version>${camel.version}</version>
+                <!-- Provided by petals-se-camel -->
+                <scope>provided</scope>
+                <exclusions>
+                    <!-- Provided by petals-se-camel -->
+                    <exclusion>
+                        <artifactId>jaxb-core</artifactId>
+                        <groupId>com.sun.xml.bind</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>jaxb-impl</artifactId>
+                        <groupId>com.sun.xml.bind</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.camel</groupId>
+                <artifactId>camel-test</artifactId>
+                <version>${camel.version}</version>
+            </dependency>
+
+            <dependency>
+                <!-- Caution: this Camel extension is not provided by default in Petals SE Camel -->
+                <!-- TODO: Create a shared library to embed camel-jaxb -->
+                <groupId>org.apache.camel</groupId>
+                <artifactId>camel-jaxb</artifactId>
+                <version>${camel.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <!-- Provided by petals-se-camel -->
+                        <artifactId>jaxb-core</artifactId>
+                        <groupId>com.sun.xml.bind</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <!-- Provided by petals-se-camel -->
+                        <artifactId>jaxb-impl</artifactId>
+                        <groupId>com.sun.xml.bind</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.ow2.petals</groupId>
+                <artifactId>petals-se-flowable</artifactId>
+                <scope>provided</scope>
+                <type>jbi-component</type>
+                <!-- CAUTION: En changeant la version du SE Flowable, il faut aussi adapter les valeurs
+                     des propriétés 'cxf.se-flowable.version' et 'jetty.se-flowable.version' pour y mettre
+                     les versions de CXF et Jetty embarquée dans le SE Flowable -->
+                <version>${petals-se-flowable.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.ow2.petals</groupId>
+                <artifactId>petals-se-flowable-junit</artifactId>
+                <version>${petals-se-flowable-junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>${flowable.groupId}</groupId>
+                <artifactId>flowable-engine</artifactId>
+                <version>${flowable.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <!-- The SLF bridge 'jcl-over-slf4j' is used to redirect JCL calls to SLF4J API,
+                          so commons-logging must be excluded -->
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <!-- The SLF bridge 'log4j-over-slf4j' is used to redirect Log4J calls to SLF4J API,
+                          so commons-logging must be excluded -->
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>${flowable.groupId}</groupId>
+                <artifactId>flowable-cxf</artifactId>
+                <version>${flowable.version}</version>
+            </dependency>
+
+            <dependency>
+                <!-- Align spring dependencies with the ones of Flowable -->
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <version>5.1.8.RELEASE</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+
+            <dependency>
+                <!-- Align spring dependencies with the ones of Flowable -->
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-bom</artifactId>
+                <version>5.1.5.RELEASE</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+
+            <dependency>
+                <groupId>org.ow2.easywsdl</groupId>
+                <artifactId>easywsdl-ext-wsdl4complexwsdl</artifactId>
+                <version>${easywsdl.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.ow2.easywsdl</groupId>
+                <artifactId>easywsdl-wsdl</artifactId>
+                <version>${easywsdl.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.ow2.petals</groupId>
+                <artifactId>petals-se-mapping</artifactId>
+                <scope>provided</scope>
+                <type>jbi-component</type>
+                <version>${petals-se-mapping.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.ow2.petals</groupId>
+                <artifactId>petals-se-mapping-junit</artifactId>
+                <version>${petals-se-mapping.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.ow2.petals</groupId>
+                <artifactId>petals-se-pojo</artifactId>
+                <scope>provided</scope>
+                <type>jbi-component</type>
+                <version>${petals-se-pojo.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.ow2.petals</groupId>
+                <artifactId>petals-jbi</artifactId>
+                <version>1.4.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.ow2.petals</groupId>
+                <artifactId>petals-cdk-api</artifactId>
+                <version>2.6.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.ow2.petals</groupId>
+                <artifactId>petals-cdk-core</artifactId>
+                <version>5.7.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.ow2.petals</groupId>
+                <artifactId>petals-log</artifactId>
+                <version>1.2.0</version>
+            </dependency>
+
+            <!-- Dépendance pour le fonctionnement des méthodes toString, equals et hashcode sur les objet générés par xjc -->
+            <dependency>
+                <groupId>org.jvnet.jaxb2_commons</groupId>
+                <artifactId>jaxb2-basics-runtime</artifactId>
+                <version>${jvnet.jaxb2.version}</version>
+            </dependency>
+
+            <!-- figer les dépendences suite à la montée de version de flowable -->
+            <dependency>
+                <groupId>org.glassfish.jaxb</groupId>
+                <artifactId>jaxb-xjc</artifactId>
+                <version>2.3.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.glassfish.jaxb</groupId>
+                <artifactId>jaxb-runtime</artifactId>
+                <version>2.3.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>sfl4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.ow2.easycommons</groupId>
+                <artifactId>easycommons-util</artifactId>
+                <version>2.5.0.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <!-- Correction dependence BC-rest -->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpcore</artifactId>
+                <version>${httpcomponents.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpcore-nio</artifactId>
+                <version>${httpcomponents.version}</version>
+            </dependency>
+
             <!-- Tests unitaires -->
             <dependency>
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
                 <version>3.21.0</version>
             </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- Ne pas mettre à jour la version (3.x sinon le plugin enforcer stop le build parce qu'une dépendence contient un module-info.java et donc casse la règle java 1.8 max ...-->
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>2.28.2</version>
+            </dependency>
+
+            <dependency>
+                <artifactId>petals-bc-quartz</artifactId>
+                <groupId>org.ow2.petals</groupId>
+                <scope>provided</scope>
+                <type>jbi-component</type>
+                <version>${petals-bc-quartz.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
-  <dependency>
-  </dependency>
- <build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jvnet.jaxb2_commons</groupId>
+            <artifactId>jaxb2-basics-runtime</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
         <pluginManagement>
+            <!-- Configurations globales des plugins utilitaires -->
             <plugins>
                 <plugin>
                     <artifactId>petals-maven-plugin</artifactId>
@@ -54,12 +452,243 @@
                     <extensions>true</extensions>
                     <configuration>
                         <jbiDirectory>src/main/resources/jbi</jbiDirectory>
-                      <verbose>true</verbose>
+                        <verbose>true</verbose>
                         <downloadAndPackageWsdlResources>true</downloadAndPackageWsdlResources>
-                        <serviceUnitNameMappingInSA>${dollar}${dollar}{artifactId}-${dollar}${dollar}{version.major}.${dollar}${dollar}{version.minor}</serviceUnitNameMappingInSA>
+                        <serviceUnitNameMappingInSA>
+                            ${dollar}${dollar}{artifactId}-${dollar}${dollar}{version.major}.${dollar}${dollar}{version.minor}
+                        </serviceUnitNameMappingInSA>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.jvnet.jaxb2.maven2</groupId>
+                    <artifactId>maven-jaxb2-plugin</artifactId>
+                    <version>0.14.0</version>
+                    <configuration>
+                        <extension>true</extension>
+                        <strict>false</strict>
+                        <!--
+                         Permet la génération de méthode toString sur les objet générés par xjc
+                         Attention à ne pas mettre equals et hashcode sans évaluer l'impact sur les comparaisons d'objet que cela peu avoir !
+                         -->
+                        <args>
+                            <arg>-XtoString</arg>
+                        </args>
+                        <plugins>
+                            <plugin>
+                                <groupId>org.jvnet.jaxb2_commons</groupId>
+                                <artifactId>jaxb2-basics</artifactId>
+                                <version>${jvnet.jaxb2.version}</version>
+                            </plugin>
+                        </plugins>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <!-- 2.20.1 a un problème pour s'exécuter dans docker...
+                         https://issues.apache.org/jira/browse/SUREFIRE-1408 -->
+                    <version>3.0.0-M5</version>
+<!--                    <version>2.20</version>-->
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>3.1.2</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.cxf</groupId>
+                    <artifactId>cxf-codegen-plugin</artifactId>
+                    <version>3.4.2</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>3.0.0</version><!-- 1.8 -->
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>3.2.0</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                    <configuration>
+                        <source>8</source>
+                        <target>8</target>
                     </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.0.0</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>extra-enforcer-rules</artifactId>
+                        <version>1.4</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>enforce-java</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireJavaVersion>
+                                    <version>[1.8,)</version>
+                                    <message>Uses Java 8 as it is the Petals supported Java and a different version can badly
+                                        interacts with some of the Maven Plugin used.
+                                    </message>
+                                </requireJavaVersion>
+                                <enforceBytecodeVersion>
+                                    <maxJdkVersion>1.8</maxJdkVersion>
+                                </enforceBytecodeVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>enforce-maven</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <fail>${maven-enforcer-plugin.rules.maven}</fail>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>[3.6.3,)</version>
+                                    <message>Uses Maven 3.6.3 or upper.</message>
+                                </requireMavenVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>enforce-buggy-banned-deps</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <fail>${maven-enforcer-plugin.rules.bannedDependencies}</fail>
+                            <rules>
+                                <bannedDependencies>
+                                    <excludes>
+                                        <!-- Apache Commons Pool contains a memory leak in its versions 1.x. Version 2.5 is required -->
+                                        <exclude>commons-pool:commons-pool</exclude>
+                                    </excludes>
+                                    <message>These dependencies are banned because they contains defaults (memory leak or
+                                        encounterred bugs)
+                                    </message>
+                                </bannedDependencies>
+                            </rules>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>enforce-java8-banned-deps</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <fail>${maven-enforcer-plugin.rules.bannedDependencies}</fail>
+                            <rules>
+                                <bannedDependencies>
+                                    <excludes>
+                                        <exclude>javax.activation:activation</exclude>
+                                        <exclude>org.apache.geronimo.specs:geronimo-activation_1.0.2_spec</exclude>
+                                        <exclude>org.apache.geronimo.specs:geronimo-activation_1.1_spec</exclude>
+
+                                        <exclude>org.apache.geronimo.specs:geronimo-annotation_1.0_spec</exclude>
+
+                                        <exclude>org.apache.geronimo.specs:geronimo-jaxws_2.1_spec</exclude>
+                                        <exclude>org.apache.geronimo.specs:geronimo-jaxws_2.2_spec</exclude>
+                                        <exclude>javax.xml.ws:jaxws-api</exclude>
+
+                                        <exclude>javax.jws:jsr181-api</exclude>
+
+                                        <exclude>org.apache.geronimo.specs:geronimo-saaj_1.1_spec</exclude>
+                                        <exclude>org.apache.geronimo.specs:geronimo-saaj_1.3_spec</exclude>
+                                        <exclude>javax.xml.soap:saaj-api</exclude>
+                                        <exclude>com.sun.xml.messaging.saaj:saaj-impl</exclude>
+
+                                        <exclude>org.apache.geronimo.specs:geronimo-ws-metadata_2.0_spec</exclude>
+
+                                        <exclude>xerces:xercesImpl</exclude>
+                                        <exclude>xerces:xmlParserAPIs</exclude>
+
+                                        <exclude>org.apache.xerces:xml-apis</exclude>
+                                        <exclude>xml-apis:xml-apis</exclude>
+
+                                        <exclude>org.apache.geronimo.specs:geronimo-stax-api_1.0_spec</exclude>
+                                        <exclude>org.apache.geronimo.specs:geronimo-stax-api_1.2_spec</exclude>
+                                        <exclude>javax.xml.bind:jsr173_api</exclude>
+                                        <exclude>stax:stax-api</exclude>
+                                        <exclude>javax.xml.stream:stax-api</exclude>
+
+                                        <exclude>org.apache.xalan:xalan</exclude>
+                                        <exclude>xalan:xalan</exclude>
+
+                                        <exclude>javax.xml.bind:jaxb-api</exclude>
+                                    </excludes>
+                                    <message>These dependencies are already present in Java 8</message>
+                                </bannedDependencies>
+                            </rules>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>enforce-no-circular-deps</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <banCircularDependencies/>
+                            </rules>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>enforce-dependency-convergence</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <fail>${maven-enforcer-plugin.rules.dependency}</fail>
+                            <rules>
+                                <DependencyConvergence/>
+                            </rules>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>enforce-upper-bound-deps</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <fail>${maven-enforcer-plugin.rules.upperBound}</fail>
+                            <rules>
+                                <requireUpperBoundDeps/>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 </project>
