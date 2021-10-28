@@ -12,11 +12,15 @@
     <groupId>fr.ausy.traing.petals.services.techniques</groupId>
     <artifactId>parent-techniques</artifactId>
     <packaging>pom</packaging>
+
     <modules>
         <module>su-sql-bibliotheque-provide</module>
         <module>su-soap-bibliotheque-sql-consume</module>
+        <module>su-rest-openlibrary-provide</module>
+        <module>su-soap-openlibrary-consume</module>
         <module>sa-bibliotheque-dev</module>
     </modules>
+
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>

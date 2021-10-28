@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<wsdl:definitions
+    xmlns:tns="http://openlibrary.org/api/1.0"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    targetNamespace="http://openlibrary.org/api/1.0"
+    xmlns:modele="http://ausy.fr/training/petals/modele/biblotheque/1.0"
+    name="OpenlibraryService">
+
+    <wsdl:types>
+        <xsd:schema
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://openlibrary.org/api/1.0">
+            <xsd:import namespace="http://ausy.fr/training/petals/modele/biblotheque/1.0"
+                        schemaLocation="modele-bibliotheque.xsd"/>
+            <!--Obtenir informations dossier-->
+            <xsd:element name="obtenir-par-isbn">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="isbn" type="xsd:long"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="obtenir-par-isbn-reponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element ref="modele:livre"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="isbn-inconnu">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="isbn" type="xsd:long"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="obtenir-auteur">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="id" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="obtenir-auteur-reponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="nom" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="auteur-inconnu">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="id" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="obtenir-par-isbn">
+        <wsdl:part name="parameters" element="tns:obtenir-par-isbn"/>
+    </wsdl:message>
+    <wsdl:message name="obtenir-par-isbn-reponse">
+        <wsdl:part name="parameters" element="tns:obtenir-par-isbn-reponse"/>
+    </wsdl:message>
+    <wsdl:message name="isbn-inconnu">
+        <wsdl:part name="parameters" element="tns:isbn-inconnu"/>
+    </wsdl:message>
+
+    <wsdl:message name="obtenir-auteur">
+        <wsdl:part name="parameters" element="tns:obtenir-auteur"/>
+    </wsdl:message>
+    <wsdl:message name="obtenir-auteur-reponse">
+        <wsdl:part name="parameters" element="tns:obtenir-auteur-reponse"/>
+    </wsdl:message>
+    <wsdl:message name="auteur-inconnu">
+        <wsdl:part name="parameters" element="tns:auteur-inconnu"/>
+    </wsdl:message>
+
+    <wsdl:portType name="Openlibrary">
+        <wsdl:operation name="obtenir-par-isbn">
+            <wsdl:input message="tns:obtenir-par-isbn"/>
+            <wsdl:output message="tns:obtenir-par-isbn-reponse"/>
+            <wsdl:fault name="isbn-inconnu" message="tns:isbn-inconnu"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="obtenir-auteur">
+            <wsdl:input message="tns:obtenir-auteur"/>
+            <wsdl:output message="tns:obtenir-auteur-reponse"/>
+            <wsdl:fault name="auteur-inconnu" message="tns:auteur-inconnu"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="OpenlibrarySoapPortBinding" type="tns:Openlibrary">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="obtenir-par-isbn">
+            <soap:operation soapAction="http://openlibrary.org/api/1.0/obtenir-par-isbn"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="isbn-inconnu">
+                <soap:fault name="isbn-inconnu" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="obtenir-auteur">
+            <soap:operation soapAction="http://openlibrary.org/api/1.0/obtenir-auteur"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="auteur-inconnu">
+                <soap:fault name="auteur-inconnu" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="OpenlibraryService">
+        <wsdl:port name="autogenerate" binding="tns:OpenlibrarySoapPortBinding">
+            <soap:address location="http://localhost:9000/OpenlibraryServicelist"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>parent-techniques</artifactId>
+        <groupId>fr.ausy.traing.petals.services.techniques</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>su-rest-openlibrary-provide</artifactId>
+    <packaging>jbi-service-unit</packaging>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.ow2.petals</groupId>
+            <artifactId>petals-bc-rest</artifactId>
+            <type>jbi-component</type>
+        </dependency>
+        <!-- Tests unitaires -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.petals</groupId>
+            <artifactId>petals-bc-rest-junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <!-- Use to log component traces when testing SU -->
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <!-- Use to log component traces when testing SU -->
+            <!-- This dependency is set as 'provided' by petals-bc-rest, so we must redeclare it here -->
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <!-- Use to log component traces when testing SU -->
+            <groupId>org.ow2.petals</groupId>
+            <artifactId>petals-log</artifactId>
+            <version>1.2.0</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <!-- Nettoyer les fichiers dezippés via le maven-dependency-plugin -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${basedir}/src/main/resources/jbi</directory>
+                            <includes>
+                                <include>modele-bibliotheque.xsd</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>fr.ausy.traing.petals.modeles</groupId>
+                                    <artifactId>modele-bibliotheque</artifactId>
+                                    <version>${project.version}</version>
+                                    <outputDirectory>${basedir}/src/main/resources/jbi</outputDirectory>
+                                    <includes>modele-bibliotheque.xsd</includes>
+                                    <overWrite>true</overWrite>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <schemas>
+                                <schema>
+                                    <fileset>
+                                        <directory>${basedir}/src/main/resources/jbi</directory>
+                                        <includes>
+                                            <include>openlibrary.wsdl</include>
+                                        </includes>
+                                    </fileset>
+                                </schema>
+                            </schemas>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.ow2.petals</groupId>
+                <artifactId>petals-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

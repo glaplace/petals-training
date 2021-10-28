@@ -23,7 +23,7 @@ Les properties permettent d'externaliser une partie de la configuration afin d'Ã
 Cela permet aussi d'avoir le mÃªme livrable sur tout les environnements (test, qualif, ppr, prd) seules les properties changes et elles ne sont pas dans le livrable.
 
 ```
-ausy.training.openlibrary.isbn.url=https://openlibrary.org/isbn/
+ausy.training.openlibrary.url=https://openlibrary.org
 ausy.training.relance.cron=0 * * * *
 ausy.training.sql.jdbc.driver=org.h2.Driver
 ausy.training.sql.jdbc.url=jdbc:h2:file:/path/to/petals-training/h2db

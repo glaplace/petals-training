@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jbi:jbi version="1.0"
+         xmlns:jbi="http://java.sun.com/xml/ns/jbi"
+         xmlns:openlibrary="http://openlibrary.org/api/1.0"
+         xmlns:cdk5="http://petals.ow2.org/components/extensions/version-5"
+         xmlns:rest="http://petals.ow2.org/components/rest/version-1">
+
+    <jbi:services binding-component="true">
+        <jbi:provides interface-name="openlibrary:Openlibrary" service-name="openlibrary:OpenlibraryService" endpoint-name="autogenerate">
+            <cdk5:timeout>30000</cdk5:timeout>
+            <cdk5:wsdl>openlibrary.wsdl</cdk5:wsdl>
+            <rest:mapping>
+                <rest:operation name="openlibrary:obtenir-par-isbn">
+                    <rest:http-method>GET</rest:http-method>
+                    <rest:http-body-type>NO_BODY</rest:http-body-type>
+                    <rest:uri>${ausy.training.openlibrary.url}/isbn/{isbn}.json</rest:uri>
+                    <rest:xpath-param name="isbn">//*[local-name()='isbn']</rest:xpath-param>
+                    <rest:trust-all-certificates>${cdt.trust-all-certificates}</rest:trust-all-certificates>
+                    <rest:headers>
+                        <rest:header name="Accept">
+                            <rest:constant>application/json</rest:constant>
+                        </rest:header>
+                        <rest:header name="User-Agent">
+                            <rest:constant>Petals-ESB BC-REST</rest:constant>
+                        </rest:header>
+                    </rest:headers>
+                    <rest:http-body-from-json-virtual-root>response</rest:http-body-from-json-virtual-root>
+                    <rest:http-body-from-json-multiple-pi>true</rest:http-body-from-json-multiple-pi>
+                    <rest:http-body-from-json-auto-array>true</rest:http-body-from-json-auto-array>
+                    <rest:http-body-from-json-auto-primitive>true</rest:http-body-from-json-auto-primitive>
+                    <!--Cas en 200-->
+                    <rest:on-http-status code="200">
+                        <rest:otherwise-out>
+                            <rest:transformation>
+                                <rest:xsl>livre/obtenir-par-isbn-reponse-200.xsl</rest:xsl>
+                            </rest:transformation>
+                        </rest:otherwise-out>
+                    </rest:on-http-status>
+                    <!--Cas en 404-->
+                    <rest:on-http-status code="404">
+                        <rest:otherwise-fault>
+                            <rest:transformation>
+                                <rest:xsl>livre/obtenir-par-isbn-erreur-404.xsl</rest:xsl>
+                            </rest:transformation>
+                        </rest:otherwise-fault>
+                    </rest:on-http-status>
+                </rest:operation>
+                <rest:operation name="openlibrary:obtenir-auteur">
+                    <rest:http-method>GET</rest:http-method>
+                    <rest:http-body-type>NO_BODY</rest:http-body-type>
+                    <rest:uri>${ausy.training.openlibrary.url}/authors/{id}.json</rest:uri>
+                    <rest:xpath-param name="id">//*[local-name()='id']</rest:xpath-param>
+                    <rest:trust-all-certificates>${cdt.trust-all-certificates}</rest:trust-all-certificates>
+                    <rest:headers>
+                        <rest:header name="Accept">
+                            <rest:constant>application/json</rest:constant>
+                        </rest:header>
+                        <rest:header name="User-Agent">
+                            <rest:constant>Petals-ESB BC-REST</rest:constant>
+                        </rest:header>
+                    </rest:headers>
+                    <rest:http-body-from-json-virtual-root>response</rest:http-body-from-json-virtual-root>
+                    <rest:http-body-from-json-multiple-pi>true</rest:http-body-from-json-multiple-pi>
+                    <rest:http-body-from-json-auto-array>true</rest:http-body-from-json-auto-array>
+                    <rest:http-body-from-json-auto-primitive>true</rest:http-body-from-json-auto-primitive>
+                    <!--Cas en 200-->
+                    <rest:on-http-status code="200">
+                        <rest:otherwise-out>
+                            <rest:transformation>
+                                <rest:xsl>auteur/obtenir-auteur-reponse-200.xsl</rest:xsl>
+                            </rest:transformation>
+                        </rest:otherwise-out>
+                    </rest:on-http-status>
+                    <!--Cas en 404-->
+                    <rest:on-http-status code="404">
+                        <rest:otherwise-fault>
+                            <rest:transformation>
+                                <rest:xsl>auteur/obtenir-auteur-erreur-404.xsl</rest:xsl>
+                            </rest:transformation>
+                        </rest:otherwise-fault>
+                    </rest:on-http-status>
+                </rest:operation>
+            </rest:mapping>
+        </jbi:provides>
+    </jbi:services>
+</jbi:jbi>

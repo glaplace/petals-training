@@ -24,8 +24,13 @@
             <version>${project.version}</version>
             <type>jbi-service-unit</type>
         </dependency>
+        <dependency>
+            <groupId>fr.ausy.traing.petals.services.techniques</groupId>
+            <artifactId>su-rest-openlibrary-provide</artifactId>
+            <version>${project.version}</version>
+            <type>jbi-service-unit</type>
+        </dependency>
     </dependencies>
-
 
     <build>
         <plugins>
