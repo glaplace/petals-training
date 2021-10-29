@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<jbi:jbi version="1.0"
+         xmlns:jbi="http://java.sun.com/xml/ns/jbi"
+
+         xmlns:petalsCDK="http://petals.ow2.org/components/extensions/version-5"
+         xmlns:mail="http://petals.ow2.org/components/mail/version-4"
+         xmlns:notifier="http://ausy.fr/training/petals/modele/biblotheque/notifier/1.0">
+
+    <jbi:services binding-component="false">
+
+        <!-- Import a Service into Petals => provides a Service. -->
+        <jbi:provides interface-name="notifier:NotifierMail" service-name="notifier:NotifierMailService"
+                      endpoint-name="autogenerate">
+
+            <!-- CDK specific elements -->
+            <petalsCDK:wsdl>notifier-mail.wsdl</petalsCDK:wsdl>
+            <petalsCDK:validate-wsdl>true</petalsCDK:validate-wsdl>
+
+            <!-- Component specific elements -->
+            <mail:scheme>smtp</mail:scheme>
+            <mail:host>${ausy.training.mail.smtp.hostname}</mail:host>
+            <mail:port>${ausy.training.mail.smtp.port}</mail:port>
+            <mail:from>${ausy.training.mail.default.from}</mail:from>
+            <mail:to>${ausy.training.mail.default.to}</mail:to>
+            <mail:reply>${ausy.training.mail.default.from}</mail:reply>
+            <mail:content-type>text/html</mail:content-type>
+        </jbi:provides>
+    </jbi:services>
+</jbi:jbi>

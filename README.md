@@ -16,6 +16,7 @@ Il faut un jdk 8 (utilisation de openjdk)
 * intellij
 * soap-ui
 * insomnia
+* mailhog => src/main/docker/mailhog
 
 ## properties esb
 Ci dessous la liste des « properties » de configuration utilisées dans le projets. <br/> 
@@ -28,4 +29,9 @@ ausy.training.relance.cron=0 * * * *
 ausy.training.sql.jdbc.driver=org.h2.Driver
 ausy.training.sql.jdbc.url=jdbc:h2:file:/path/to/petals-training/h2db
 ausy.training.sql.jdbc.user=sa
+
+ausy.training.mail.smtp.hostname=localhost
+ausy.training.mail.smtp.port=1025
+ausy.training.mail.default.to=moa@ausy.com
+ausy.training.mail.default.from=no-reply.training@ausy.com
 ```

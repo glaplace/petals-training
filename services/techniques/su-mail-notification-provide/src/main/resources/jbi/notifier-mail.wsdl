@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="NotifierMailService"
+                  targetNamespace="http://ausy.fr/training/petals/modele/biblotheque/notifier/1.0"
+                  xmlns:tns="http://ausy.fr/training/petals/modele/biblotheque/notifier/1.0"
+                  xmlns:bcmail="http://petals.ow2.org/bc/mail/annotations/1.0"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://ausy.fr/training/petals/modele/biblotheque/notifier/1.0">
+
+            <xsd:element name="notifier">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="sujet" type="xsd:string"/>
+                        <xsd:element name="message" type="xsd:string"/>
+                        <xsd:element name="destinataire" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="notifierRequete">
+        <wsdl:part name="parameters" element="tns:notifier"/>
+    </wsdl:message>
+
+    <wsdl:portType name="NotifierMail">
+        <wsdl:operation name="notifier">
+            <wsdl:input message="tns:notifierRequete"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="NotifierMailBinding" type="tns:NotifierMail">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="notifier">
+            <soap:operation soapAction="http://ausy.fr/training/petals/modele/biblotheque/notifier/1.0/notifier"/>
+            <bcmail:subject>Subject: ${/*[local-name()='notifier']/*[local-name()='sujet']}</bcmail:subject>
+            <bcmail:body><![CDATA[
+                  <p>
+                     Message:
+                     <code>${/*[local-name()='notifier']/*[local-name()='message']}</code>
+                  </p>]]>
+            </bcmail:body>
+            <bcmail:to>//*[local-name()='notifier']/*[local-name()='destinataire']/text()</bcmail:to>
+            <bcmail:header>
+                <bcmail:name>X-Send-By</bcmail:name>
+                <bcmail:value>${string('Petals ESB - BC Mail')}</bcmail:value>
+            </bcmail:header>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="NotifierMailService">
+        <wsdl:port name="autogenerate" binding="tns:NotifierMailBinding">
+            <soap:address location="http://localhost:9003/NotifierMailService"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

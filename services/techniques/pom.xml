@@ -19,6 +19,8 @@
         <module>su-rest-openlibrary-provide</module>
         <module>su-soap-openlibrary-consume</module>
         <module>sa-bibliotheque-dev</module>
+        <module>su-mail-notification-provide</module>
+        <module>su-soap-notifier-consume</module>
     </modules>
 
     <properties>
