@@ -7,33 +7,33 @@
     <xsl:variable name="modele">http://ausy.fr/training/petals/modele/biblotheque/1.0</xsl:variable>
 
     <xsl:template match="/">
-        <xsl:element name="obtenir-par-isbn-reponse" namespace="${ol-ns}">
+        <xsl:element name="ol:obtenir-par-isbn-reponse" namespace="{$ol-ns}">
             <xsl:apply-templates/>
         </xsl:element>
     </xsl:template>
 
     <xsl:template match="response">
-        <xsl:element name="livre" namespace="{$modele}">
-            <xsl:element name="titre" namespace="{$modele}">
+        <xsl:element name="modele:livre" namespace="{$modele}">
+            <xsl:element name="modele:titre" namespace="{$modele}">
                 <xsl:value-of select="title"/>
             </xsl:element>
-            <xsl:element name="resume" namespace="{$modele}">
+            <xsl:element name="modele:resume" namespace="{$modele}">
                 <xsl:value-of select="description/value"/>
             </xsl:element>
-            <xsl:element name="nb-page" namespace="{$modele}">
+            <xsl:element name="modele:nb-page" namespace="{$modele}">
                 <xsl:value-of select="identifiant-technique-dossier"/>
             </xsl:element>
-            <xsl:element name="isbn" namespace="{$modele}">
+            <xsl:element name="modele:isbn" namespace="{$modele}">
                 <xsl:value-of select="isbn_13"/>
             </xsl:element>
             <!-- référence vers le détails auteur -->
-            <xsl:element name="auteur" namespace="{$modele}">
+            <xsl:element name="modele:auteur" namespace="{$modele}">
                 <xsl:value-of select="authors[0]/key"/>
             </xsl:element>
-            <xsl:element name="langue" namespace="{$modele}">
+            <xsl:element name="modele:langue" namespace="{$modele}">
                 <xsl:value-of select="publish_country"/>
             </xsl:element>
-            <xsl:element name="annee-publication" namespace="{$modele}">
+            <xsl:element name="modele:annee-publication" namespace="{$modele}">
                 <xsl:value-of select="publish_date"/>
             </xsl:element>
         </xsl:element>

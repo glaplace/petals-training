@@ -6,17 +6,13 @@
 >
 
     <xsl:output method="xml" encoding="UTF-8" indent="yes" omit-xml-declaration="no"/>
-    <xsl:variable name="ol-ns">http://openlibrary.org/api/1.0</xsl:variable>
+    <xsl:variable name="openlibrary-ns">http://openlibrary.org/api/1.0</xsl:variable>
     <xsl:param name="rest-xsl:http-status-code"/>
-    <xsl:param name="id" />
+    <xsl:param name="id"/>
 
     <xsl:template match="/">
-        <xsl:apply-templates/>
-    </xsl:template>
-
-    <xsl:template match="response">
-        <xsl:element name="ol:auteur-inconnu" namespace="{$ol-ns}">
-            <xsl:element name="id" namespace="{$ol-ns}">
+        <xsl:element name="openlibrary:auteur-inconnu" namespace="{$openlibrary-ns}">
+            <xsl:element name="openlibrary:id" namespace="{$openlibrary-ns}">
                 <xsl:value-of select="$id"/>
             </xsl:element>
         </xsl:element>

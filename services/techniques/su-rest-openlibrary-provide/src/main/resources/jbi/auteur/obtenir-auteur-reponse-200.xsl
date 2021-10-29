@@ -6,13 +6,13 @@
     <xsl:variable name="ol-ns">http://cd35.fr/controle-legalite/1.0</xsl:variable>
 
     <xsl:template match="/">
-        <xsl:element name="obtenir-auteur-reponse" namespace="${ol-ns}">
+        <xsl:element name="ol:obtenir-auteur-reponse" namespace="{$ol-ns}">
             <xsl:apply-templates/>
         </xsl:element>
     </xsl:template>
 
     <xsl:template match="response">
-        <xsl:element name="nom" namespace="{$ol-ns}">
+        <xsl:element name="ol:nom" namespace="{$ol-ns}">
             <xsl:value-of select="name"/>
         </xsl:element>
     </xsl:template>

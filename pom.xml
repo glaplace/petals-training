@@ -114,12 +114,6 @@
                 <artifactId>petals-bc-rest-junit</artifactId>
                 <version>${petals-bc-rest-junit.version}</version>
                 <scope>test</scope>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.apache.httpcomponents</groupId>
-                        <artifactId>httpclient</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
 
             <dependency>

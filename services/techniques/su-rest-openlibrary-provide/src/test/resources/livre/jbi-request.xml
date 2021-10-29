@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<ns:obtenir-par-isbn xmlns:ns="http://openlibrary.org/api/1.0">
+    <isbn>9782811202569</isbn>
+</ns:obtenir-par-isbn>

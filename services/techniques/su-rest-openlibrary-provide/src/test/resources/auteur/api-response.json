@@ -1,0 +1,20 @@
+{
+    "created": {
+        "type": "/type/datetime",
+        "value": "2020-07-31T05:05:01.648434"
+    },
+    "latest_revision": 1,
+    "name": "David Gemmell",
+    "key": "/authors/OL8027105A",
+    "personal_name": "David Gemmell",
+    "birth_date": "1948",
+    "death_date": "2006",
+    "type": {
+        "key": "/type/author"
+    },
+    "last_modified": {
+        "type": "/type/datetime",
+        "value": "2020-07-31T05:05:01.648434"
+    },
+    "revision": 1
+}
