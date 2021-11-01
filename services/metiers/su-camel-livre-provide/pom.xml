@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>parent-metiers</artifactId>
+        <groupId>fr.ausy.traing.petals.services.metiers</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>su-camel-livre-provide</artifactId>
+    <packaging>jbi-service-unit</packaging>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.ow2.petals</groupId>
+            <artifactId>petals-se-camel</artifactId>
+            <type>jbi-component</type>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ow2.petals</groupId>
+            <artifactId>camel-petals</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ow2.petals</groupId>
+            <artifactId>petals-jbi</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <!-- TU -->
+        <dependency>
+            <groupId>org.ow2.easywsdl</groupId>
+            <artifactId>easywsdl-ext-wsdl4complexwsdl</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ow2.easywsdl</groupId>
+            <artifactId>easywsdl-wsdl</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-test</artifactId>
+            <version>${camel.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ow2.petals</groupId>
+            <artifactId>petals-se-camel-junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Assurer l'ordre du build -->
+        <dependency>
+            <groupId>fr.ausy.traing.petals.services.techniques</groupId>
+            <artifactId>su-sql-bibliotheque-provide</artifactId>
+            <version>${project.version}</version>
+            <type>jbi-service-unit</type>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <!-- Nettoyer les fichiers dezippés via le maven-dependency-plugin -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${basedir}/src/main/resources/jbi</directory>
+                            <includes>
+                                <include>modele-bibliotheque.xsd</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>fr.ausy.traing.petals.modeles</groupId>
+                                    <artifactId>modele-bibliotheque</artifactId>
+                                    <version>${project.version}</version>
+                                    <outputDirectory>${basedir}/src/main/resources/jbi</outputDirectory>
+                                    <includes>modele-bibliotheque.xsd</includes>
+                                    <overWrite>true</overWrite>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>fr.ausy.traing.petals.services.techniques</groupId>
+                                    <artifactId>su-sql-bibliotheque-provide</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>jbi-service-unit</type>
+                                    <includes>SQLInterface.wsdl,bibliothequeSQLService.wsdl</includes>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <schemas>
+                                <schema>
+                                    <fileset>
+                                        <directory>${basedir}/src/main/resources/jbi</directory>
+                                        <includes>
+                                            <include>referentiel-livre.wsdl</include>
+                                        </includes>
+                                    </fileset>
+                                </schema>
+                                <schema>
+                                    <fileset>
+                                        <directory>${basedir}/target/dependency</directory>
+                                        <includes>
+                                            <include>bibliothequeSQLService.wsdl</include>
+                                            <include>SQLInterface.wsdl</include>
+                                        </includes>
+                                    </fileset>
+                                </schema>
+                            </schemas>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.ow2.petals</groupId>
+                <artifactId>petals-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

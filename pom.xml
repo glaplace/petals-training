@@ -437,6 +437,12 @@
                 <type>jbi-component</type>
                 <version>${petals-bc-quartz.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.12.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -460,9 +466,8 @@
                         <jbiDirectory>src/main/resources/jbi</jbiDirectory>
                         <verbose>true</verbose>
                         <downloadAndPackageWsdlResources>true</downloadAndPackageWsdlResources>
-                        <serviceUnitNameMappingInSA>
-                            ${dollar}${dollar}{artifactId}-${dollar}${dollar}{version.major}.${dollar}${dollar}{version.minor}
-                        </serviceUnitNameMappingInSA>
+                        <serviceUnitNameMappingInSA>${dollar}${dollar}{artifactId}-${dollar}${dollar}{version.major}.${dollar}${dollar}{version.minor}</serviceUnitNameMappingInSA>
+                        <attachJar>true</attachJar>
                     </configuration>
                 </plugin>
                 <plugin>

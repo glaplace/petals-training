@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<jbi:jbi
+    xmlns:cdk="http://petals.ow2.org/components/extensions/version-5"
+    xmlns:jbi="http://java.sun.com/xml/ns/jbi"
+    xmlns:camel="http://petals.ow2.org/components/petals-se-camel/jbi/version-1.0"
+    xmlns:livre="http://ausy.fr/training/petals/modele/biblotheque/livre/1.0"
+    xmlns:sql="http://petals.ow2.org/components/sql/version-1"
+    xmlns:sql-bibli="http://ausy.fr/training/petals/modele/biblotheque/1.0/sql"
+    version="1.0">
+
+    <jbi:services binding-component="false">
+        <jbi:provides interface-name="livre:ReferentielLivre"
+                      service-name="livre:ReferentielLivreService"
+                      endpoint-name="autogenerate">
+            <cdk:wsdl>referentiel-livre.wsdl</cdk:wsdl>
+        </jbi:provides>
+
+        <jbi:consumes interface-name="sql:SQLInterface" service-name="sql-bibli:BibliothequeSQLService">
+            <cdk:mep>InOut</cdk:mep>
+            <cdk:operation>sql:select</cdk:operation>
+            <cdk:timeout>360000</cdk:timeout>
+            <camel:service-id>sql-select</camel:service-id>
+        </jbi:consumes>
+
+        <jbi:consumes interface-name="sql:SQLInterface" service-name="sql-bibli:BibliothequeSQLService">
+            <cdk:mep>InOnly</cdk:mep>
+            <cdk:operation>sql:insert</cdk:operation>
+            <cdk:timeout>360000</cdk:timeout>
+            <camel:service-id>sql-insert</camel:service-id>
+        </jbi:consumes>
+
+        <jbi:consumes interface-name="sql:SQLInterface" service-name="sql-bibli:BibliothequeSQLService">
+            <cdk:mep>InOnly</cdk:mep>
+            <cdk:operation>sql:delete</cdk:operation>
+            <cdk:timeout>360000</cdk:timeout>
+            <camel:service-id>sql-delete</camel:service-id>
+        </jbi:consumes>
+
+        <jbi:consumes interface-name="sql:SQLInterface" service-name="sql-bibli:BibliothequeSQLService">
+            <cdk:mep>InOut</cdk:mep>
+            <cdk:operation>sql:update</cdk:operation>
+            <cdk:timeout>360000</cdk:timeout>
+            <camel:service-id>sql-update</camel:service-id>
+        </jbi:consumes>
+
+        <camel:java-routes>fr.ausy.traing.petals.services.metiers.livre.operation.ObtenirLivreOperation</camel:java-routes>
+
+    </jbi:services>
+</jbi:jbi>

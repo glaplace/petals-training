@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<wsdl:definitions
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    targetNamespace="http://ausy.fr/training/petals/modele/biblotheque/livre/1.0"
+    xmlns:tns="http://ausy.fr/training/petals/modele/biblotheque/livre/1.0"
+    xmlns:camel="http://petals.ow2.org/components/petals-se-camel/wsdl/version-1.0"
+    xmlns:modele="http://ausy.fr/training/petals/modele/biblotheque/1.0"
+    name="ReferentielLivre">
+    <wsdl:types>
+        <xsd:schema elementFormDefault="qualified"
+                    targetNamespace="http://ausy.fr/training/petals/modele/biblotheque/livre/1.0">
+            <xsd:import namespace="http://ausy.fr/training/petals/modele/biblotheque/1.0" schemaLocation="modele-bibliotheque.xsd"/>
+
+            <xsd:element name="obtenir">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="identifiant" type="xsd:long"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="obtenir-reponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element ref="modele:livre"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="rechercher">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="titre" type="xsd:string" minOccurs="0"/>
+                        <xsd:element name="resume" type="xsd:string" minOccurs="0"/>
+                        <xsd:element name="nb-page" type="xsd:int" minOccurs="0"/>
+                        <xsd:element name="isbn" type="xsd:string" minOccurs="0"/>
+                        <xsd:element name="auteur" type="xsd:string" minOccurs="0"/>
+                        <xsd:element name="langue" type="xsd:string" minOccurs="0"/>
+                        <xsd:element name="annee-publication" type="xsd:int" minOccurs="0"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="rechercher-reponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element ref="modele:livre" minOccurs="0" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="creer">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element ref="modele:livre"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="creer-reponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element ref="modele:livre"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="modifier">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element ref="modele:livre"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="supprimer">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="identifiant" type="xsd:long"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <!-- Fault -->
+            <xsd:element name="livre-inconnu">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="identifiant" type="xsd:long"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+
+    </wsdl:types>
+
+    <wsdl:message name="obtenir">
+        <wsdl:part name="parameters" element="tns:obtenir"/>
+    </wsdl:message>
+    <wsdl:message name="obtenir-reponse">
+        <wsdl:part name="parameters" element="tns:obtenir-reponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="creer">
+        <wsdl:part name="parameters" element="tns:creer"/>
+    </wsdl:message>
+    <wsdl:message name="creer-reponse">
+        <wsdl:part name="parameters" element="tns:creer-reponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="modifier">
+        <wsdl:part name="parameters" element="tns:modifier"/>
+    </wsdl:message>
+
+    <wsdl:message name="supprimer">
+        <wsdl:part name="parameters" element="tns:supprimer"/>
+    </wsdl:message>
+
+    <wsdl:message name="rechercher">
+        <wsdl:part name="parameters" element="tns:rechercher"/>
+    </wsdl:message>
+    <wsdl:message name="rechercher-reponse">
+        <wsdl:part name="parameters" element="tns:rechercher-reponse"/>
+    </wsdl:message>
+
+    <!-- fault -->
+    <wsdl:message name="livre-inconu">
+        <wsdl:part name="parameters" element="tns:livre-inconnu"/>
+    </wsdl:message>
+
+    <wsdl:portType name="ReferentielLivre">
+        <wsdl:operation name="obtenir">
+            <wsdl:input message="tns:obtenir"/>
+            <wsdl:output message="tns:obtenir-reponse"/>
+            <wsdl:fault name="livre-inconu" message="tns:livre-inconu"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="creer">
+            <wsdl:input message="tns:creer"/>
+            <wsdl:output message="tns:creer-reponse"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="modifier">
+            <wsdl:input message="tns:modifier"/>
+            <wsdl:fault name="livre-inconu" message="tns:livre-inconu"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="supprimer">
+            <wsdl:input message="tns:supprimer"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="rechercher">
+            <wsdl:input message="tns:rechercher"/>
+            <wsdl:output message="tns:rechercher-reponse"/>
+        </wsdl:operation>
+
+    </wsdl:portType>
+
+    <wsdl:binding name="ReferentielLivreSoapBinding" type="tns:ReferentielLivre">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="obtenir">
+            <camel:operation service-id="obtenir-livre"/>
+            <soap:operation
+                soapAction="http://ausy.fr/training/petals/modele/biblotheque/livre/1.0/obtenir"
+                style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="livre-inconu">
+                <soap:fault name="livre-inconu" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="creer">
+            <camel:operation service-id="creer-livre"/>
+            <soap:operation
+                soapAction="http://ausy.fr/training/petals/modele/biblotheque/livre/1.0/creer"
+                style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="modifier">
+            <camel:operation service-id="modifier-livre"/>
+            <soap:operation
+                soapAction="http://ausy.fr/training/petals/modele/biblotheque/livre/1.0/modifier"
+                style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:fault name="livre-inconu">
+                <soap:fault name="livre-inconu" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="supprimer">
+            <camel:operation service-id="supprimer-livre"/>
+            <soap:operation
+                soapAction="http://ausy.fr/training/petals/modele/biblotheque/livre/1.0/supprimer"
+                style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+        </wsdl:operation>
+
+        <wsdl:operation name="rechercher">
+            <camel:operation service-id="rechercher-livre"/>
+            <soap:operation
+                soapAction="http://ausy.fr/training/petals/modele/biblotheque/livre/1.0/rechercher"
+                style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="ReferentielLivreService">
+        <wsdl:port name="autogenerate" binding="tns:ReferentielLivreSoapBinding">
+            <soap:address location="jbi://autogenerate"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
