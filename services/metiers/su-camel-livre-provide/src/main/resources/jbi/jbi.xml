@@ -45,6 +45,7 @@
         </jbi:consumes>
 
         <camel:java-routes>fr.ausy.traing.petals.services.metiers.livre.operation.ObtenirLivreOperation</camel:java-routes>
+        <camel:java-routes>fr.ausy.traing.petals.services.metiers.livre.operation.SupprimerLivreOperation</camel:java-routes>
 
     </jbi:services>
 </jbi:jbi>

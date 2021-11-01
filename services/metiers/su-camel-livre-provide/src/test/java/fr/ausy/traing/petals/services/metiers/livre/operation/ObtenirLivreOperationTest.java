@@ -24,13 +24,12 @@ import java.util.Collections;
  *
  */
 public class ObtenirLivreOperationTest extends AbstractOperationTest {
-    private final int LIVRE_ID = 666;
     private ObtenirLivreOperation service;
 
     @Test
     public void obtenirLivre() throws InterruptedException, JAXBException {
         creerMockSql();
-        final Exchange exchange = template().send(getFrom(Routes.OBTENIR_LIVRE), ExchangePattern.InOut, new Step("Test creer identite") {
+        final Exchange exchange = template().send(getFrom(Routes.OBTENIR_LIVRE), ExchangePattern.InOut, new Step("Test obtenir livre") {
             @Override
             public void process(final Exchange exchange) throws Exception {
                 final Obtenir obtenir = new Obtenir();
@@ -116,7 +115,6 @@ public class ObtenirLivreOperationTest extends AbstractOperationTest {
         livre.setResume("Son nom est Druss. Garçon violent et maladroit, il vit dans un petit village de paysans situé au pied des montagnes du pays drenaï. Bûcheron hargneux le jour, époux tendre le soir, il mène une existence paisible au milieu des bois. Jusqu'au jour où une troupe de mercenaires envahit le village pour tuer tous les hommes et capturer toutes les femmes. Druss, alors dans la forêt, arrive trop tard sur les lieux du massacre. Le village est détruit, son père gît dans une mare de sang. Et Rowena, sa femme, a disparu... S'armant de Snaga, une hache ayant appartenu à son grand-père, il part à la poursuite des ravisseurs. Déterminé à retrouver son épouse, rien ne devra se mettre en travers de son chemin. Mais la route sera longue pour ce jeune homme inexpérimenté. Car sa quête le mènera jusqu'au bout du monde. Il deviendra lutteur et mercenaire, il fera tomber des royaumes, il en élèvera d'autres, il combattra bêtes, hommes et démons. Car il est Druss... et voici sa légende...");
         return livre;
     }
-
 
     @Override
     protected Collection<String> routesToMock() {

@@ -36,7 +36,6 @@ public class ObtenirLivreOperation extends AbstractOperation {
             }).to(PETALS_PREFIX + Routes.SQL_SELECT)
             .process(exchange -> {
                 if (isJbiFailed(exchange)) {
-                    // TODO : voir si c'est possible d'avoir des faults ?
                     throw new MessagingException("Erreur SQL ", exchange.getException());
                 }
                 final Result result =   unmarshal(exchange.getIn(), Result.class);
