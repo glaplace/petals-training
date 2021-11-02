@@ -12,7 +12,6 @@ import org.ow2.petals.components.sql.version_1.RowType;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-
 import java.util.List;
 
 /**
@@ -28,6 +27,10 @@ abstract class AbstractOperation extends PetalsRouteBuilder {
      * Nom de la propriété camel contenant l'identifiant du livre objet d'une opération.
      */
     protected static final String ID_LIVRE = AbstractOperation.class.getName() + ".identifiant-livre";
+    /**
+     * Nom de la propriété camel contenant la requête initiale.
+     */
+    protected static final String REQUETE = AbstractOperation.class.getName() + ".requete";
 
     private final MarshallingHelper marshalling;
 

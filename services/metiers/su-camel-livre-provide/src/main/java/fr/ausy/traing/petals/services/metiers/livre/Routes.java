@@ -1,6 +1,9 @@
 package fr.ausy.traing.petals.services.metiers.livre;
 
-public class Routes {
+/**
+ * Contient les noms des routes utilisées par ce service dans petals.
+ */
+public final class Routes {
     private Routes() {
         // Classe utilitaire ne doit pas être instanciée
     }
@@ -17,4 +20,8 @@ public class Routes {
     public static final String SQL_INSERT = "sql-insert";
     public static final String SQL_UPDATE = "sql-update";
     public static final String SQL_DELETE = "sql-delete";
+
+
+    public static final String OBTENIR_LIVRE_INTERNE = "obtenir-livre-interne";
+    public static final String RECHERCHER_LIVRE_INTERNE = "rechercher-livre-interne";
 }

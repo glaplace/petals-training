@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import javax.xml.datatype.XMLGregorianCalendar;
-
 import java.util.Objects;
 
 public final class SQLUtils {
@@ -26,8 +25,8 @@ public final class SQLUtils {
      * Échappement des caractères spéciaux SQL.
      * si {@code x} est null retourne null
      *
-     * @param x
-     * @param escapeDoubleQuotes
+     * @param x                  chaîne à échapper
+     * @param escapeDoubleQuotes chaîne échappée.
      * @return la chaine de caractère échappée
      */
     public static String escapeString(final String x, final boolean escapeDoubleQuotes) {

@@ -16,6 +16,20 @@
             <cdk:wsdl>referentiel-livre.wsdl</cdk:wsdl>
         </jbi:provides>
 
+        <jbi:consumes interface-name="livre:ReferentielLivre" service-name="livre:ReferentielLivreService">
+            <cdk:mep>InOut</cdk:mep>
+            <cdk:operation>livre:obtenir</cdk:operation>
+            <cdk:timeout>3600</cdk:timeout>
+            <camel:service-id>obtenir-livre-interne</camel:service-id>
+        </jbi:consumes>
+
+        <jbi:consumes interface-name="livre:ReferentielLivre" service-name="livre:ReferentielLivreService">
+            <cdk:mep>InOut</cdk:mep>
+            <cdk:operation>livre:rechercher</cdk:operation>
+            <cdk:timeout>3600</cdk:timeout>
+            <camel:service-id>rechercher-livre-interne</camel:service-id>
+        </jbi:consumes>
+
         <jbi:consumes interface-name="sql:SQLInterface" service-name="sql-bibli:BibliothequeSQLService">
             <cdk:mep>InOut</cdk:mep>
             <cdk:operation>sql:select</cdk:operation>
@@ -46,6 +60,7 @@
 
         <camel:java-routes>fr.ausy.traing.petals.services.metiers.livre.operation.ObtenirLivreOperation</camel:java-routes>
         <camel:java-routes>fr.ausy.traing.petals.services.metiers.livre.operation.SupprimerLivreOperation</camel:java-routes>
+        <camel:java-routes>fr.ausy.traing.petals.services.metiers.livre.operation.CreerLivreOperation</camel:java-routes>
 
     </jbi:services>
 </jbi:jbi>
