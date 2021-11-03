@@ -691,4 +691,12 @@
             </plugin>
         </plugins>
     </build>
+    
+    <distributionManagement>
+        <snapshotRepository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/glaplace/petals-training</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
