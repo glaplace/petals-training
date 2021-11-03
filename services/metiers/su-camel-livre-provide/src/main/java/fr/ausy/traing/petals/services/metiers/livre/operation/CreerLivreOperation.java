@@ -1,5 +1,6 @@
 package fr.ausy.traing.petals.services.metiers.livre.operation;
 
+import com.ebmwebsourcing.easycommons.xml.SourceHelper;
 import fr.ausy.traing.petals.services.metiers.livre.Routes;
 import fr.ausy.traing.petals.services.metiers.livre.sql.SQLUtils;
 import fr.ausy.training.petals.modele.biblotheque._1.Livre;
@@ -7,6 +8,7 @@ import fr.ausy.training.petals.modele.biblotheque.livre._1.*;
 
 import javax.jbi.messaging.MessagingException;
 import javax.xml.bind.JAXBException;
+import javax.xml.transform.Source;
 
 /**
  * Définition de la route camel réalisant l'opération creer.
@@ -16,8 +18,8 @@ import javax.xml.bind.JAXBException;
  */
 public class CreerLivreOperation extends AbstractOperation {
     private static final String LIVRE_EXISTANT = CreerLivreOperation.class.getName() + ".livre-existant";
+    private static final String LIVRE_A_RETOURNER = CreerLivreOperation.class.getName() + ".livre-a-retourner";
     protected static final String DIRECT_CREER = "direct:creer-livre-interne";
-    protected static final String DIRECT_LIVRE_EXISTANT = "direct:livre-existant";
 
     public CreerLivreOperation() throws JAXBException {
         super();
@@ -26,7 +28,6 @@ public class CreerLivreOperation extends AbstractOperation {
     @Override
     public void configure() {
         routeInterneCreer();
-        routeInterneLivreExistant();
         routePetalsCreer();
     }
 
@@ -38,25 +39,29 @@ public class CreerLivreOperation extends AbstractOperation {
                 exchange.setProperty(REQUETE, livre);
 
                 final Rechercher rechercher = creerRechercheDepuisLivre(livre);
-
                 marshal(exchange.getOut(), rechercher);
             }).to(PETALS_PREFIX + Routes.RECHERCHER_LIVRE_INTERNE)
             .process(exchange -> {
                 if (isJbiFailed(exchange)) {
                     if (isJbiFault(exchange.getIn())) {
-                        //TODO
-                        return;
+                        throw new MessagingException("Fault inattendue du service Rechercher livre : " + SourceHelper.toString(exchange.getIn().getBody(Source.class)));
                     }
-                    throw new MessagingException("Erreur innatendue", exchange.getException());
+                    throw new MessagingException("Erreur inattendue du service Rechercher livre", exchange.getException());
                 }
 
                 final RechercherReponse rechercherReponse = unmarshal(exchange.getIn(), RechercherReponse.class);
-                exchange.setProperty(LIVRE_EXISTANT, rechercherReponse.getLivre().isEmpty());
-                exchange.setProperty(ID_LIVRE, rechercherReponse.getLivre().get(0).getLivreId());
+                exchange.setProperty(LIVRE_EXISTANT, !rechercherReponse.getLivre().isEmpty());
+                if (!rechercherReponse.getLivre().isEmpty()) {
+                    exchange.setProperty(LIVRE_A_RETOURNER, rechercherReponse.getLivre().get(0));
+                }
             })
             .choice()
             .when(exchange -> exchange.getProperty(LIVRE_EXISTANT, Boolean.class))
-            .to(DIRECT_LIVRE_EXISTANT)
+            .process(exchange -> {
+                final CreerReponse reponse = new CreerReponse();
+                reponse.setLivre(exchange.getProperty(LIVRE_A_RETOURNER, Livre.class));
+                marshal(exchange.getOut(), reponse);
+            })
             .otherwise()
             .to(DIRECT_CREER)
             .end();
@@ -71,22 +76,23 @@ public class CreerLivreOperation extends AbstractOperation {
             .process(exchange -> {
                 final Livre livre = exchange.getProperty(REQUETE, Livre.class);
                 final String sql = "insert into livre (TITRE, RESUME, NB_PAGE, ISBN, AUTEUR, LANGUE, ANNEE_PUBLICATION) values ("
-                    + SQLUtils.escapeString(livre.getTitre())
-                    + SQLUtils.escapeString(livre.getResume())
-                    + livre.getNbPage()
-                    + SQLUtils.escapeString(livre.getIsbn())
-                    + SQLUtils.escapeString(livre.getAuteur())
-                    + SQLUtils.escapeString(livre.getLangue())
-                    + SQLUtils.escapeString("" + livre.getAnneePublication())
+                    + SQLUtils.getString(livre.getTitre()) + ", "
+                    + SQLUtils.getString(livre.getResume()) + ", "
+                    + livre.getNbPage() + ", "
+                    + SQLUtils.getString(livre.getIsbn()) + ", "
+                    + SQLUtils.getString(livre.getAuteur()) + ", "
+                    + SQLUtils.getString(livre.getLangue()) + ", "
+                    + livre.getAnneePublication()
                     + ")";
 
                 marshal(exchange.getOut(), SQL_OBJECT_FACTORY.createSql(sql));
-            }).to(PETALS_PREFIX + Routes.CREER_LIVRE)
+            }).to(PETALS_PREFIX + Routes.SQL_INSERT)
             .process(exchange -> {
                 if (isJbiFailed(exchange)) {
                     if (isJbiFault(exchange.getIn())) {
-                        return;
+                        throw new MessagingException("Fault inattendue du service SQL insert : " + SourceHelper.toString(exchange.getIn().getBody(Source.class)));
                     }
+                    throw new MessagingException("Erreur inattendue du service SQL insert : ", exchange.getException());
                 }
                 final Rechercher rechercher = creerRechercheDepuisLivre(exchange.getProperty(REQUETE, Livre.class));
                 marshal(exchange.getOut(), rechercher);
@@ -94,10 +100,9 @@ public class CreerLivreOperation extends AbstractOperation {
             .process(exchange -> {
                 if (isJbiFailed(exchange)) {
                     if (isJbiFault(exchange.getIn())) {
-                        //TODO
-                        return;
+                        throw new MessagingException("Fault inattendue, impossible de rechercher le livre nouvellement créé : " + SourceHelper.toString(exchange.getIn().getBody(Source.class)));
                     }
-                    throw new MessagingException("Erreur innatendue", exchange.getException());
+                    throw new MessagingException("Erreur inattendue du service Rechercher livre", exchange.getException());
                 }
 
                 final RechercherReponse rechercherReponse = unmarshal(exchange.getIn(), RechercherReponse.class);
@@ -106,30 +111,6 @@ public class CreerLivreOperation extends AbstractOperation {
                 }
                 final CreerReponse reponse = new CreerReponse();
                 reponse.setLivre(rechercherReponse.getLivre().get(0));
-            });
-    }
-
-    /**
-     * Cas du livre déjà créé, on retourne simplement le livre trouvé en base.
-     */
-    public void routeInterneLivreExistant() {
-        from(DIRECT_LIVRE_EXISTANT)
-            .process(exchange -> {
-                final Obtenir obtenir = new Obtenir();
-                obtenir.setIdentifiant(exchange.getProperty(ID_LIVRE, Long.class));
-                marshal(exchange.getOut(), obtenir);
-            }).to(PETALS_PREFIX + Routes.OBTENIR_LIVRE_INTERNE)
-            .process(exchange -> {
-                if (isJbiFailed(exchange)) {
-                    if (isJbiFault(exchange.getIn())) {
-//TODO :
-                    }
-                    return;
-                }
-                final ObtenirReponse obtenirReponse = unmarshal(exchange.getIn(), ObtenirReponse.class);
-
-                final CreerReponse reponse = new CreerReponse();
-                reponse.setLivre(obtenirReponse.getLivre());
                 marshal(exchange.getOut(), reponse);
             });
     }
