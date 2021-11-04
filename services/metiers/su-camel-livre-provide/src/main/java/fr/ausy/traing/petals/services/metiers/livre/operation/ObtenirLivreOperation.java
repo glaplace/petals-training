@@ -1,20 +1,15 @@
 package fr.ausy.traing.petals.services.metiers.livre.operation;
 
 import fr.ausy.traing.petals.services.metiers.livre.Routes;
-import fr.ausy.traing.petals.services.metiers.livre.sql.ColonnesLivre;
-import fr.ausy.traing.petals.services.metiers.livre.sql.SQLUtils;
 import fr.ausy.training.petals.modele.biblotheque._1.Livre;
 import fr.ausy.training.petals.modele.biblotheque.livre._1.LivreInconnu;
 import fr.ausy.training.petals.modele.biblotheque.livre._1.Obtenir;
 import fr.ausy.training.petals.modele.biblotheque.livre._1.ObtenirReponse;
-import org.ow2.petals.components.sql.version_1.ColumnType;
 import org.ow2.petals.components.sql.version_1.Result;
-import org.ow2.petals.components.sql.version_1.RowType;
 
 import javax.jbi.messaging.MessagingException;
 import javax.xml.bind.JAXBException;
 
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -38,7 +33,7 @@ public class ObtenirLivreOperation extends AbstractOperation {
                 if (isJbiFailed(exchange)) {
                     throw new MessagingException("Erreur SQL ", exchange.getException());
                 }
-                final Result result =   unmarshal(exchange.getIn(), Result.class);
+                final Result result = unmarshal(exchange.getIn(), Result.class);
                 // oui pas de livre ou plus d'un livre (pour le même id) c'est livre inconnu.
                 if (Objects.isNull(result) || result.getRow().size() != 1) {
                     final LivreInconnu livreInconnu = new LivreInconnu();
@@ -57,14 +52,12 @@ public class ObtenirLivreOperation extends AbstractOperation {
      * @param result Réponse SQL à transoformer
      * @return réponse du service image de la réponse SQL
      */
-    private ObtenirReponse transformerResultEnreponse(final Result result) {
+    private static ObtenirReponse transformerResultEnreponse(final Result result) {
         final ObtenirReponse reponse = new ObtenirReponse();
         final Livre livre = transformerRowEnLivre(result.getRow().get(0));
         reponse.setLivre(livre);
         return reponse;
     }
-
-
 
 
 }

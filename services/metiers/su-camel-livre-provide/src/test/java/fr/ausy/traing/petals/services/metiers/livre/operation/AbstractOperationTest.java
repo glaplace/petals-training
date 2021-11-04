@@ -13,6 +13,12 @@ public abstract class AbstractOperationTest extends PetalsCamelTestSupport {
 
     public abstract AbstractOperation getService();
 
+    protected Livre creerLivre(final int id) {
+        final Livre livre = creerLivre();
+        livre.setLivreId(id);
+        return livre;
+    }
+
     protected Livre creerLivre() {
         return creerLivre(true);
     }

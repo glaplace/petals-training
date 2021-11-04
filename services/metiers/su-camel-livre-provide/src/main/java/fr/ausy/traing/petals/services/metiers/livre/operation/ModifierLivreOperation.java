@@ -36,18 +36,10 @@ public class ModifierLivreOperation extends AbstractOperation {
                 marshal(exchange.getOut(), obtenir);
             }).to(PETALS_PREFIX + Routes.OBTENIR_LIVRE_INTERNE)
             .process(exchange -> {
-                if (isJbiFailed(exchange)) {
-                    if (isJbiFault(exchange.getIn())) {
-                        final Object faultObject = unmarshal(exchange.getIn(), Object.class);
-                        if (faultObject instanceof LivreInconnu) {
-                            setJbiFault(getMarshalling(), exchange, faultObject);
-
-                            return;
-                        }
-                        throw new MessagingException("Fault inconnue du service ObtenirLivre " + faultObject);
-                    }
-                    throw new MessagingException("Erreur inconnue du service Obtenir Livre", exchange.getException());
+                if (traitementPotentielleErreur(exchange)) {
+                    return;
                 }
+
                 final ObtenirReponse obtenirReponse = unmarshal(exchange.getIn(), ObtenirReponse.class);
                 final Livre livre = exchange.getProperty(REQUETE, Livre.class);
                 if (Objects.isNull(obtenirReponse) || Objects.isNull(obtenirReponse.getLivre())) {
@@ -75,5 +67,21 @@ public class ModifierLivreOperation extends AbstractOperation {
                     throw new MessagingException("Erreur SQL ", exchange.getException());
                 }
             });
+    }
+
+    private boolean traitementPotentielleErreur(final org.apache.camel.Exchange exchange) throws JAXBException, MessagingException {
+        if (isJbiFailed(exchange)) {
+            if (isJbiFault(exchange.getIn())) {
+                final Object faultObject = unmarshal(exchange.getIn(), Object.class);
+                if (faultObject instanceof LivreInconnu) {
+                    setJbiFault(getMarshalling(), exchange, faultObject);
+
+                    return true;
+                }
+                throw new MessagingException("Fault inconnue du service ObtenirLivre " + faultObject);
+            }
+            throw new MessagingException("Erreur inconnue du service Obtenir Livre", exchange.getException());
+        }
+        return false;
     }
 }

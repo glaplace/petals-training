@@ -76,7 +76,7 @@ abstract class AbstractOperation extends PetalsRouteBuilder {
      * @param rowType Ligne de résultat SQL à transformer
      * @return Livre image de {@code rowType}
      */
-    protected Livre transformerRowEnLivre(final RowType rowType) {
+    protected static Livre transformerRowEnLivre(final RowType rowType) {
         final List<ColumnType> cols = rowType.getColumn();
         final Livre livre = new Livre();
         livre.setAnneePublication(SQLUtils.getIntegerFromColumn(cols.get(ColonnesLivre.ANNEE_PUBLICATION.getPosition()).getValue()));
