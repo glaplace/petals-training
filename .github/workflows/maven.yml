@@ -4,6 +4,9 @@
 name: Java CI with Maven
 
 on: [push, pull_request]
+env:
+  MAVEN_ARGS: >-
+    -B --no-transfer-progress --update-snapshots
 
 jobs:
   build:
@@ -17,7 +20,7 @@ jobs:
           distribution: 'adopt'
           cache: maven
       - name: Build with Maven
-        run: mvn -B clean install --update-snapshots --no-transfer-progress --file pom.xml
+        run: mvn ${MAVEN_ARGS} clean install --file pom.xml
 
   coverage:
     needs: build
@@ -30,7 +33,7 @@ jobs:
           java-version: '8'
           distribution: 'adopt'
           cache: maven
-      - run: mvn -B verify -P coverage --no-transfer-progress
+      - run: mvn ${MAVEN_ARGS} verify -P coverage
 
       - uses: codecov/codecov-action@v1
         with:
@@ -51,6 +54,7 @@ jobs:
           cache: maven
 
       - name: Publish SNAPSHOT version to GitHub Packages (we can skip tests since we only deploy if the build workflow succeeded)
-        run: mvn -B --no-transfer-progress deploy -DskipTests
+        run: mvn ${MAVEN_ARGS} deploy -DskipTests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

@@ -9,7 +9,7 @@ import java.util.Random;
  * Classe mére des classes de tests permettant de mutualiser les comportements.
  */
 public abstract class AbstractOperationTest extends PetalsCamelTestSupport {
-    protected final int LIVRE_ID = new Random().nextInt();
+    protected final int LIVRE_ID = Math.abs(new Random().nextInt());
 
     public abstract AbstractOperation getService();
 
