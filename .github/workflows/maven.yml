@@ -13,6 +13,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Cache Maven dependencies
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-mvn-modules
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
@@ -37,7 +44,12 @@ jobs:
 
       - uses: codecov/codecov-action@v2
         with:
-          file: ./**/target/site/jacoco/jacoco.xml
+          fail_ci_if_error: true
+          verbose: true
+#          file: ./**/target/site/jacoco/jacoco.xml
+#          directory: ./**/target/site/jacoco/
+          files: ./**/target/site/jacoco/jacoco.xml
+          flags: unittests
           name: codecov
           token: ${{ secrets.CODECOV_TOKEN }}
 
