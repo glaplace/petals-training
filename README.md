@@ -1,7 +1,11 @@
 # petals-training
 Repository helping learning the basics of developing a service on esb petals.
+[![Java CI with Maven](https://github.com/glaplace/petals-training/actions/workflows/maven.yml/badge.svg)](https://github.com/glaplace/petals-training/actions/workflows/maven.yml)
+[![codecov](https://codecov.io/gh/glaplace/petals-training/branch/main/graph/badge.svg?token=9JU2OFJ2PC)](https://codecov.io/gh/glaplace/petals-training)
+[![versionjava](https://img.shields.io/badge/jdk-8-brightgreen.svg?logo=java)](https://adoptium.net/?variant=openjdk8&jvmVariant=hotspot)
+[![License](http://img.shields.io/:license-GPL V3-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
-## acrhitecture
+## architecture
 L'architecture est basée sur le modèle du département ille et vilaine. 
 
 Elle est composée de module maven, chacun réalisant une tâche. 
