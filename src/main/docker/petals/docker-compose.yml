@@ -1,0 +1,30 @@
+version: "3.9" 
+services:
+  petals-esb:
+    build: .
+    ports:
+      - "9084:8084"
+      - "9086:8086"
+      - "9089:8089"
+      - "9000:8000"
+      - "7700:7700"
+      - "7800:7800"
+    volumes:
+      - m2_data:/home/petals/.m2:ro
+      - esb_conf:/home/petals/configuration:ro
+
+volumes:
+    m2_data:
+      driver: local
+      driver_opts:
+        type: none
+        device: ${M2_PATH}
+        o: bind
+        
+    esb_conf: 
+      driver: local
+      driver_opts:
+        type: none
+        device: ${CONF_PATH}
+        o: bind
+

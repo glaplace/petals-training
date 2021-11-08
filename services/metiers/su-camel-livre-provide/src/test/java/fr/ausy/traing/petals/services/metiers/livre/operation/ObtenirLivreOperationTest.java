@@ -15,6 +15,7 @@ import org.ow2.petals.components.sql.version_1.ColumnType;
 import org.ow2.petals.components.sql.version_1.Result;
 import org.ow2.petals.components.sql.version_1.RowType;
 
+import javax.jbi.messaging.MessagingException;
 import javax.xml.bind.JAXBException;
 
 import java.util.Collection;
@@ -52,6 +53,35 @@ public class ObtenirLivreOperationTest extends AbstractOperationTest {
             .isNotNull()
             .usingRecursiveComparison()
             .isEqualTo(expected);
+    }
+
+    @Test
+    public void obtenirLivreErreurSQL() throws InterruptedException, JAXBException {
+        final String messageException = "My Error Message";
+
+        final MockEndpoint mock = getTo(Routes.SQL_SELECT);
+        mock.expectedMessageCount(1);
+        mock.whenAnyExchangeReceived(exchange -> {
+            throw new MessagingException(messageException);
+        });
+        final Exchange exchange = template().send(getFrom(Routes.OBTENIR_LIVRE), ExchangePattern.InOut, new Step("Test obtenir livre") {
+            @Override
+            public void process(final Exchange exchange) throws Exception {
+                final Obtenir obtenir = new Obtenir();
+                obtenir.setIdentifiant(LIVRE_ID);
+                service.marshal(exchange.getIn(), obtenir);
+            }
+        });
+
+        assertMockEndpointsSatisfied();
+        assertTrue(PetalsRouteBuilder.isJbiFailed(exchange));
+        assertNotNull(exchange.getException());
+        assertFalse(PetalsRouteBuilder.isJbiFault(exchange.getOut()));
+
+        org.assertj.core.api.Assertions.assertThat(exchange.getException())
+            .isNotNull()
+            .isInstanceOf(MessagingException.class)
+            .hasMessage(messageException);
     }
 
     /**

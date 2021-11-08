@@ -39,4 +39,7 @@ ausy.training.mail.smtp.hostname=localhost
 ausy.training.mail.smtp.port=1025
 ausy.training.mail.default.to=moa@ausy.com
 ausy.training.mail.default.from=no-reply.training@ausy.com
+
+
+ausy.training.emprunt.duree=3
 ```

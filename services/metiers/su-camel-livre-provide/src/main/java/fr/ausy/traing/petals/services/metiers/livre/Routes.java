@@ -21,7 +21,6 @@ public final class Routes {
     public static final String SQL_UPDATE = "sql-update";
     public static final String SQL_DELETE = "sql-delete";
 
-
     public static final String OBTENIR_LIVRE_INTERNE = "obtenir-livre-interne";
     public static final String RECHERCHER_LIVRE_INTERNE = "rechercher-livre-interne";
 }

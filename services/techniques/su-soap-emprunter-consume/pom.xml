@@ -9,8 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>sa-bibliotheque-dev</artifactId>
-    <packaging>jbi-service-assembly</packaging>
+    <artifactId>su-soap-emprunter-consume</artifactId>
+    <packaging>jbi-service-unit</packaging>
+
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -18,27 +19,15 @@
 
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>su-soap-bibliotheque-sql-consume</artifactId>
-            <version>${project.version}</version>
-            <type>jbi-service-unit</type>
+            <groupId>org.ow2.petals</groupId>
+            <artifactId>petals-bc-soap</artifactId>
+            <type>jbi-component</type>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>su-soap-openlibrary-consume</artifactId>
+            <artifactId>su-camel-emprunter-provide</artifactId>
             <version>${project.version}</version>
-            <type>jbi-service-unit</type>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>su-soap-notifier-consume</artifactId>
-            <version>${project.version}</version>
-            <type>jbi-service-unit</type>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>su-soap-emprunter-consume</artifactId>
-            <version>${project.version}</version>
+            <scope>provided</scope>
             <type>jbi-service-unit</type>
         </dependency>
     </dependencies>

@@ -21,6 +21,8 @@
         <module>sa-bibliotheque-dev</module>
         <module>su-mail-notification-provide</module>
         <module>su-soap-notifier-consume</module>
+        <module>su-camel-emprunter-provide</module>
+        <module>su-soap-emprunter-consume</module>
     </modules>
 
     <properties>
