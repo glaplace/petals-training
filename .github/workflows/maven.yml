@@ -47,8 +47,8 @@ jobs:
           fail_ci_if_error: true
           verbose: true
 #          file: ./**/target/site/jacoco/jacoco.xml
-#          directory: ./**/target/site/jacoco/
-          files: ./**/target/site/jacoco/jacoco.xml
+          directory: ${GITHUB_WORKSPACE}/**/target/site/jacoco/
+          files: ./jacoco.xml
           flags: unittests
           name: codecov
           token: ${{ secrets.CODECOV_TOKEN }}
