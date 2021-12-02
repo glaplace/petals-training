@@ -3,14 +3,10 @@ package fr.ausy.traing.petals.services.techniques.emprunter.operation;
 import org.apache.camel.Message;
 import org.ow2.petals.camel.helpers.MarshallingHelper;
 import org.ow2.petals.camel.helpers.PetalsRouteBuilder;
-import org.ow2.petals.components.sql.version_1.ColumnType;
 import org.ow2.petals.components.sql.version_1.ObjectFactory;
-import org.ow2.petals.components.sql.version_1.RowType;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-
-import java.util.List;
 
 /**
  * Classe de base permettant l'implémentation d'une route camel réalisation une opération du service.
@@ -74,7 +70,7 @@ abstract class AbstractOperation extends PetalsRouteBuilder {
     private static JAXBContext createJaxbContext() throws JAXBException {
         return JAXBContext.newInstance(
             org.ow2.petals.components.sql.version_1.Result.class,
-            fr.ausy.training.petals.biblotheque.emprunter._1.ObjectFactory.class
+            fr.ausy.training.petals.bibliotheque.emprunter.technique._1.ObjectFactory.class
         );
     }
 }

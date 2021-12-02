@@ -1,7 +1,7 @@
 package fr.ausy.traing.petals.services.techniques.emprunter.operation;
 
 import fr.ausy.traing.petals.services.techniques.emprunter.Routes;
-import fr.ausy.training.petals.biblotheque.emprunter._1.AjouterEmprunt;
+import fr.ausy.training.petals.bibliotheque.emprunter.technique._1.AjouterEmprunt;
 import org.apache.camel.Exchange;
 import org.apache.camel.ExchangePattern;
 import org.apache.camel.RoutesBuilder;
@@ -20,8 +20,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Properties;
 import java.util.Random;
-
-import static org.junit.Assert.*;
 
 /**
  * Test de la route camel réalisant l'opération « Ajouter emprunt».

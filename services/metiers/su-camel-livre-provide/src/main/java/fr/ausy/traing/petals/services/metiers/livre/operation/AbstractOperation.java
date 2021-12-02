@@ -2,7 +2,7 @@ package fr.ausy.traing.petals.services.metiers.livre.operation;
 
 import fr.ausy.traing.petals.services.metiers.livre.sql.ColonnesLivre;
 import fr.ausy.traing.petals.services.metiers.livre.sql.SQLUtils;
-import fr.ausy.training.petals.modele.biblotheque._1.Livre;
+import fr.ausy.training.petals.modele.bibliotheque._1.Livre;
 import org.apache.camel.Message;
 import org.ow2.petals.camel.helpers.MarshallingHelper;
 import org.ow2.petals.camel.helpers.PetalsRouteBuilder;
@@ -99,8 +99,8 @@ abstract class AbstractOperation extends PetalsRouteBuilder {
     private static JAXBContext createJaxbContext() throws JAXBException {
         return JAXBContext.newInstance(
             org.ow2.petals.components.sql.version_1.Result.class,
-            fr.ausy.training.petals.modele.biblotheque._1.ObjectFactory.class,
-            fr.ausy.training.petals.modele.biblotheque.livre._1.ObjectFactory.class
+            fr.ausy.training.petals.modele.bibliotheque._1.ObjectFactory.class,
+            fr.ausy.training.petals.modele.bibliotheque.livre._1.ObjectFactory.class
         );
     }
 }

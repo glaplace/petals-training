@@ -5,7 +5,7 @@
 
          xmlns:petalsCDK="http://petals.ow2.org/components/extensions/version-5"
          xmlns:mail="http://petals.ow2.org/components/mail/version-4"
-         xmlns:notifier="http://ausy.fr/training/petals/modele/biblotheque/notifier/1.0">
+         xmlns:notifier="http://ausy.fr/training/petals/bibliotheque/technique/notifier/1.0">
 
     <jbi:services binding-component="false">
 

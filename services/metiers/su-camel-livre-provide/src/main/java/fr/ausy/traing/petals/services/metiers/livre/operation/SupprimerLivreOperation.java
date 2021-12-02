@@ -1,7 +1,7 @@
 package fr.ausy.traing.petals.services.metiers.livre.operation;
 
 import fr.ausy.traing.petals.services.metiers.livre.Routes;
-import fr.ausy.training.petals.modele.biblotheque.livre._1.Supprimer;
+import fr.ausy.training.petals.modele.bibliotheque.livre._1.Supprimer;
 
 import javax.jbi.messaging.MessagingException;
 import javax.xml.bind.JAXBException;

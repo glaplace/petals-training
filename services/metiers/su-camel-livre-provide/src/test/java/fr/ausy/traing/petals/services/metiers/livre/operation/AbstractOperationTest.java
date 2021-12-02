@@ -1,6 +1,6 @@
 package fr.ausy.traing.petals.services.metiers.livre.operation;
 
-import fr.ausy.training.petals.modele.biblotheque._1.Livre;
+import fr.ausy.training.petals.modele.bibliotheque._1.Livre;
 import org.ow2.petals.camel.junit.PetalsCamelTestSupport;
 
 import java.util.Random;

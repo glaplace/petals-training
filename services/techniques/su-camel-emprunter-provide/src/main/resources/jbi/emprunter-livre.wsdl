@@ -5,13 +5,13 @@
     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
     xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-    targetNamespace="http://ausy.fr/training/petals/biblotheque/emprunter/1.0"
-    xmlns:tns="http://ausy.fr/training/petals/biblotheque/emprunter/1.00"
+    targetNamespace="http://ausy.fr/training/petals/bibliotheque/emprunter/technique/1.0"
+    xmlns:tns="http://ausy.fr/training/petals/bibliotheque/emprunter/technique/1.0"
     xmlns:camel="http://petals.ow2.org/components/petals-se-camel/wsdl/version-1.0"
     name="EmprunterLivre">
     <wsdl:types>
         <xsd:schema elementFormDefault="qualified"
-                    targetNamespace="http://ausy.fr/training/petals/biblotheque/emprunter/1.00">
+                    targetNamespace="http://ausy.fr/training/petals/bibliotheque/emprunter/technique/1.0">
 
             <xsd:element name="livreEstDejaEmprunte">
                 <xsd:complexType>
@@ -20,6 +20,7 @@
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
+
             <xsd:element name="livreEstDejaEmprunteReponse">
                 <xsd:complexType>
                     <xsd:sequence>
@@ -83,7 +84,7 @@
         <wsdl:operation name="livreEstDejaEmprunte">
             <camel:operation service-id="livreEstDejaEmprunte"/>
             <soap:operation
-                soapAction="http://ausy.fr/training/petals/biblotheque/emprunter/1.0/livreEstDejaEmprunte"
+                soapAction="http://ausy.fr/training/petals/bibliotheque/emprunter/1.0/technique/livreEstDejaEmprunte"
                 style="document"/>
             <wsdl:input>
                 <soap:body use="literal"/>
@@ -96,7 +97,7 @@
         <wsdl:operation name="ajouterEmprunt">
             <camel:operation service-id="ajouterEmprunt"/>
             <soap:operation
-                soapAction="http://ausy.fr/training/petals/biblotheque/emprunter/1.0/ajouterEmprunt"
+                soapAction="http://ausy.fr/training/petals/bibliotheque/emprunter/1.0/technique/ajouterEmprunt"
                 style="document"/>
             <wsdl:input>
                 <soap:body use="literal"/>
@@ -106,7 +107,7 @@
         <wsdl:operation name="retournerEmprunt">
             <camel:operation service-id="retournerEmprunt"/>
             <soap:operation
-                soapAction="http://ausy.fr/training/petals/biblotheque/emprunter/1.0/retournerEmprunt"
+                soapAction="http://ausy.fr/training/petals/bibliotheque/emprunter/1.0/technique/retournerEmprunt"
                 style="document"/>
             <wsdl:input>
                 <soap:body use="literal"/>

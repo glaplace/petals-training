@@ -1,7 +1,7 @@
 package fr.ausy.traing.petals.services.techniques.emprunter.operation;
 
 import fr.ausy.traing.petals.services.techniques.emprunter.Routes;
-import fr.ausy.training.petals.biblotheque.emprunter._1.RetournerEmprunt;
+import fr.ausy.training.petals.bibliotheque.emprunter.technique._1.RetournerEmprunt;
 import org.apache.camel.Exchange;
 import org.apache.camel.ExchangePattern;
 import org.apache.camel.RoutesBuilder;

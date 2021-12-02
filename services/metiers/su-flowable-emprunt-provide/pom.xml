@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>parent-metiers</artifactId>
+        <groupId>fr.ausy.traing.petals.services.metiers</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>su-flowable-emprunt-provide</artifactId>
+    <packaging>jbi-service-unit</packaging>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.ow2.petals</groupId>
+            <artifactId>petals-se-flowable</artifactId>
+            <type>jbi-component</type>
+        </dependency>
+
+        <!-- TU -->
+
+        <dependency>
+            <groupId>org.ow2.petals</groupId>
+            <artifactId>petals-se-flowable-junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http-jetty</artifactId>
+            <version>${cxf.se-flowable.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Forcer l'ordre du build -->
+        <dependency>
+            <groupId>fr.ausy.traing.petals.services.techniques</groupId>
+            <artifactId>su-camel-emprunter-provide</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>fr.ausy.traing.petals.services.techniques</groupId>
+            <artifactId>su-mail-notification-provide</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <!-- Nettoyer les fichiers dezippés via le maven-dependency-plugin -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${basedir}/src/main/resources/jbi</directory>
+                            <includes>
+                                <include>emprunter-livre.wsdl</include>
+                                <include>notifier-mail.wsdl</include>
+                            </includes>
+                        </fileset>
+                        <fileset>
+                            <directory>${basedir}/src/test/resources/xjc</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <!-- Ne pas oublier de nettoyer les fichiers dezippés via le maven-clean-plugin -->
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>fr.ausy.traing.petals.services.techniques</groupId>
+                                    <artifactId>su-camel-emprunter-provide</artifactId>
+                                    <type>jbi-service-unit</type>
+                                    <version>${project.version}</version>
+                                    <outputDirectory>${basedir}/src/main/resources/jbi</outputDirectory>
+                                    <includes>emprunter-livre.wsdl</includes>
+                                    <overWrite>true</overWrite>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>fr.ausy.traing.petals.services.techniques</groupId>
+                                    <artifactId>su-mail-notification-provide</artifactId>
+                                    <type>jbi-service-unit</type>
+                                    <version>${project.version}</version>
+                                    <outputDirectory>${basedir}/src/main/resources/jbi</outputDirectory>
+                                    <includes>notifier-mail.wsdl</includes>
+                                    <overWrite>true</overWrite>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>unpacking-for-tests</id>
+                        <!-- Ne pas oublier de nettoyer les fichiers dezippés via le maven-clean-plugin -->
+                        <phase>generate-test-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>${flowable.groupId}</groupId>
+                                    <artifactId>flowable-cxf</artifactId>
+                                    <version>${flowable.version}</version>
+                                    <outputDirectory>${basedir}/src/test/resources/xjc</outputDirectory>
+                                    <includes>flowable-bindings.xjc</includes>
+                                    <overWrite>true</overWrite>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>set-endpoint-in-service-contracts</id>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <phase>process-resources</phase>
+                        <configuration>
+                            <target>
+                                <replace file="${basedir}/src/main/resources/jbi/emprunter-livre.wsdl">
+                                    <replacefilter token="jbi://autogenerate"
+                                                   value="petals:///{http://ausy.fr/training/petals/modele/bibliotheque/emprunter/1.0}EmprunterLivreTechnique"/>
+                                </replace>
+                                <replace file="${basedir}/src/main/resources/jbi/notifier-mail.wsdl">
+                                    <replacefilter token="jbi://autogenerate"
+                                                   value="petals:///{ttp://ausy.fr/training/petals/modele/bibliotheque/notifier/1.0}NotifierMail"/>
+                                </replace>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-codegen-plugin</artifactId>
+                <version>3.1.6</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>wsdl2java</goal>
+                        </goals>
+                        <phase>process-test-resources</phase>
+                        <configuration>
+                            <sourceRoot>${project.build.directory}/generated-test-sources/cxf</sourceRoot>
+                            <defaultOptions>
+                                <bindingFiles>
+                                    <!-- Comme requis par flowable-cxf, le stub CXF doit manipuler les dates avec le
+                                         type 'Date' au lieu du type par défaut 'XMLGregorianCalendar' -->
+                                    <bindingFile>${basedir}/src/test/resources/xjc/flowable-bindings.xjc</bindingFile>
+                                </bindingFiles>
+                            </defaultOptions>
+                            <wsdlOptions>
+                                <!-- Wsdl du service technique -->
+                                <wsdlOption>
+                                    <wsdl>${basedir}/src/main/resources/jbi/emprunter-livre.wsdl</wsdl>
+                                </wsdlOption>
+                                <wsdlOption>
+                                    <wsdl>${basedir}/src/main/resources/jbi/notifier-mail.wsdl</wsdl>
+                                </wsdlOption>
+                                <wsdlOption>
+                                    <wsdl>${basedir}/src/main/resources/jbi/processus-emprunt.wsdl</wsdl>
+                                </wsdlOption>
+                            </wsdlOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>add-test-sources</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-test-sources/cxf</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.ow2.petals</groupId>
+                <artifactId>petals-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

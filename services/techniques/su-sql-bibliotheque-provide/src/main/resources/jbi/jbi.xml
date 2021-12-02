@@ -4,7 +4,7 @@
          xmlns:jbi="http://java.sun.com/xml/ns/jbi"
          xmlns:petalsCDK="http://petals.ow2.org/components/extensions/version-5"
          xmlns:sql="http://petals.ow2.org/components/sql/version-1"
-         xmlns:bsql="http://ausy.fr/training/petals/modele/biblotheque/1.0/sql">
+         xmlns:bsql="http://ausy.fr/training/petals/modele/bibliotheque/1.0/sql">
 
     <!-- Import a Service into PEtALS or Expose a PEtALS Service => use a BC. -->
     <jbi:services binding-component="true">
@@ -21,7 +21,7 @@
             <sql:driver>${ausy.training.sql.jdbc.driver}</sql:driver>
             <sql:url>${ausy.training.sql.jdbc.url}</sql:url>
             <sql:user>${ausy.training.sql.jdbc.user}</sql:user>
-            <sql:password/>
+            <sql:password>${ausy.training.sql.jdbc.password}</sql:password>
             <sql:maxActive>8</sql:maxActive>
             <sql:maxIdle>8</sql:maxIdle>
             <sql:minIdle>0</sql:minIdle>

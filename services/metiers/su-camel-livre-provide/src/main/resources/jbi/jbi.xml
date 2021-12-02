@@ -4,9 +4,9 @@
     xmlns:cdk="http://petals.ow2.org/components/extensions/version-5"
     xmlns:jbi="http://java.sun.com/xml/ns/jbi"
     xmlns:camel="http://petals.ow2.org/components/petals-se-camel/jbi/version-1.0"
-    xmlns:livre="http://ausy.fr/training/petals/modele/biblotheque/livre/1.0"
+    xmlns:livre="http://ausy.fr/training/petals/modele/bibliotheque/livre/1.0"
     xmlns:sql="http://petals.ow2.org/components/sql/version-1"
-    xmlns:sql-bibli="http://ausy.fr/training/petals/modele/biblotheque/1.0/sql"
+    xmlns:sql-bibli="http://ausy.fr/training/petals/modele/bibliotheque/1.0/sql"
     version="1.0">
 
     <jbi:services binding-component="false">
@@ -58,9 +58,11 @@
             <camel:service-id>sql-update</camel:service-id>
         </jbi:consumes>
 
-        <camel:java-routes>fr.ausy.traing.petals.services.metiers.livre.operation.ObtenirLivreOperation</camel:java-routes>
-        <camel:java-routes>fr.ausy.traing.petals.services.metiers.livre.operation.SupprimerLivreOperation</camel:java-routes>
         <camel:java-routes>fr.ausy.traing.petals.services.metiers.livre.operation.CreerLivreOperation</camel:java-routes>
+        <camel:java-routes>fr.ausy.traing.petals.services.metiers.livre.operation.ModifierLivreOperation</camel:java-routes>
+        <camel:java-routes>fr.ausy.traing.petals.services.metiers.livre.operation.ObtenirLivreOperation</camel:java-routes>
+        <camel:java-routes>fr.ausy.traing.petals.services.metiers.livre.operation.RechercherLivreOperation</camel:java-routes>
+        <camel:java-routes>fr.ausy.traing.petals.services.metiers.livre.operation.SupprimerLivreOperation</camel:java-routes>
 
     </jbi:services>
 </jbi:jbi>

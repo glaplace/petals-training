@@ -34,6 +34,7 @@ ausy.training.relance.cron=0 * * * *
 ausy.training.sql.jdbc.driver=org.h2.Driver
 ausy.training.sql.jdbc.url=jdbc:h2:file:/path/to/petals-training/h2db
 ausy.training.sql.jdbc.user=sa
+ausy.training.sql.jdbc.password=sa
 
 ausy.training.mail.smtp.hostname=localhost
 ausy.training.mail.smtp.port=1025
@@ -42,4 +43,20 @@ ausy.training.mail.default.from=no-reply.training@ausy.com
 
 
 ausy.training.emprunt.duree=3
+```
+## Déploiement
+
+```
+deploy -u mvn:org.ow2.petals/petals-se-camel/1.2.1/zip -D propertiesFile=/path/to/petals-esb/conf/se-camel.properties
+deploy -u mvn:org.ow2.petals/petals-bc-rest/2.3.0-SNAPSHOT/zip -D propertiesFile=/path/to/petals-esb/conf/bc-rest.properties
+deploy -u mvn:org.ow2.petals/petals-sl-h2-1.4.178/1.0.0/zip
+
+deploy -u file:///path/to/petals-esb/conf/petals-bc-sql-1.7.2.zip -D propertiesFile=/path/to/petals-esb/conf/bc-sql.properties
+
+deploy -u mvn:org.ow2.petals/petals-bc-mail/4.1.0/zip -D propertiesFile=/path/to/petals-esb/conf/bc-mail.properties
+
+
+deploy -u mvn:fr.ausy.traing.petals.services.metiers/sa-bibliotheque/1.0.0-SNAPSHOT/zip
+deploy -u mvn:fr.ausy.traing.petals.services.techniques/sa-bibliotheque-dev/1.0.0-SNAPSHOT/zip
+
 ```

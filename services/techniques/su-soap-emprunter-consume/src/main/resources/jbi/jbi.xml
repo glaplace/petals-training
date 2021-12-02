@@ -4,7 +4,7 @@
          xmlns:petalsCDK="http://petals.ow2.org/components/extensions/version-5"
          xmlns:soap="http://petals.ow2.org/components/soap/version-4"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns:emprunter="http://ausy.fr/training/petals/modele/biblotheque/emprunter/1.0">
+         xmlns:emprunter="http://ausy.fr/training/petals/bibliotheque/emprunter/technique/1.0">
     <jbi:services binding-component="true">
         <jbi:consumes interface-name="emprunter:EmprunterLivreTechnique"
                       service-name="emprunter:EmprunterlLivreService">

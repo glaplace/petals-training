@@ -2,11 +2,11 @@ package fr.ausy.traing.petals.services.metiers.livre.operation;
 
 import fr.ausy.traing.petals.services.metiers.livre.Routes;
 import fr.ausy.traing.petals.services.metiers.livre.sql.SQLUtils;
-import fr.ausy.training.petals.modele.biblotheque._1.Livre;
-import fr.ausy.training.petals.modele.biblotheque.livre._1.LivreInconnu;
-import fr.ausy.training.petals.modele.biblotheque.livre._1.Modifier;
-import fr.ausy.training.petals.modele.biblotheque.livre._1.Obtenir;
-import fr.ausy.training.petals.modele.biblotheque.livre._1.ObtenirReponse;
+import fr.ausy.training.petals.modele.bibliotheque._1.Livre;
+import fr.ausy.training.petals.modele.bibliotheque.livre._1.LivreInconnu;
+import fr.ausy.training.petals.modele.bibliotheque.livre._1.Modifier;
+import fr.ausy.training.petals.modele.bibliotheque.livre._1.Obtenir;
+import fr.ausy.training.petals.modele.bibliotheque.livre._1.ObtenirReponse;
 
 import javax.jbi.messaging.MessagingException;
 import javax.xml.bind.JAXBException;

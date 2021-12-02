@@ -1,7 +1,7 @@
 package fr.ausy.traing.petals.services.techniques.emprunter.operation;
 
 import fr.ausy.traing.petals.services.techniques.emprunter.Routes;
-import fr.ausy.training.petals.biblotheque.emprunter._1.RetournerEmprunt;
+import fr.ausy.training.petals.bibliotheque.emprunter.technique._1.RetournerEmprunt;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.jbi.messaging.MessagingException;

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<wsdl:definitions
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:bpmn="http://petals.ow2.org/se/flowable/annotations/1.0"
+    targetNamespace="http://ausy.fr/training/petals/bibliotheque/emprunter/metier/1.0"
+    xmlns:tns="http://ausy.fr/training/petals/bibliotheque/emprunter/metier/1.0"
+>
+
+    <wsdl:types>
+        <xsd:schema
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://ausy.fr/training/petals/bibliotheque/emprunter/metier/1.0">
+
+            <xsd:element name="emprunter">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="livre" type="xsd:int"/>
+                        <xsd:element name="utilisateur" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="emprunterReponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="processInstanceId" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="retourner">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="livre" type="xsd:int"/>
+                        <xsd:element name="utilisateur" type="xsd:int"/>
+                        <xsd:element name="processInstanceIdCallback" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="retournerReponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="processInstanceId" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="notifierRetourParent">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="processInstanceIdParent" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="pretInconnu">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="process-instance-id-callback" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:documentation>Identifiant de l'instance du processus qui n'existe pas</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="emprunter">
+        <wsdl:part name="parameters" element="tns:emprunter"/>
+    </wsdl:message>
+    <wsdl:message name="emprunterReponse">
+        <wsdl:part name="parameters" element="tns:emprunterReponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="retourner">
+        <wsdl:part name="parameters" element="tns:retourner"/>
+    </wsdl:message>
+    <wsdl:message name="retournerReponse">
+        <wsdl:part name="parameters" element="tns:retournerReponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="notifierRetourParent">
+        <wsdl:part name="parameters" element="tns:notifierRetourParent"/>
+    </wsdl:message>
+
+    <wsdl:message name="pretInconnu">
+        <wsdl:part name="parameters" element="tns:pretInconnu"/>
+    </wsdl:message>
+
+    <wsdl:portType name="Emprunter">
+        <wsdl:operation name="emprunter">
+            <wsdl:documentation>Démarrer le processus d'emprunt d'un livre.</wsdl:documentation>
+            <wsdl:input message="tns:emprunter"/>
+            <wsdl:output message="tns:emprunterReponse"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="retourner">
+            <wsdl:documentation>Démarrer le processus de retour d'un livre.</wsdl:documentation>
+            <wsdl:input message="tns:retourner"/>
+            <wsdl:output message="tns:retournerReponse"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="notifierRetourParent">
+            <wsdl:documentation>Notifier le processus d'emprunt du retour.</wsdl:documentation>
+            <wsdl:input message="tns:notifierRetourParent"/>
+            <wsdl:fault name="pretInconnu" message="tns:pretInconnu"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="EmprunterSoapBinding" type="tns:Emprunter">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="emprunter">
+            <soap:operation soapAction="http://ausy.fr/training/petals/bibliotheque/emprunter/metier/1.0/emprunter"
+                            style="document"/>
+            <bpmn:operation processDefinitionId="processusEmprunter" action="startEvent"
+                            start-event-message-name="demarrer-emprunt-message"/>
+            <bpmn:variable name="livre">/*[local-name()='emprunter']/*[local-name()='livre']</bpmn:variable>
+            <bpmn:variable name="utilisateur">/*[local-name()='emprunter']/*[local-name()='utilisateur']</bpmn:variable>
+
+            <bpmn:output>demarrerEmpruntResponse.xsl</bpmn:output>
+
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="retourner">
+            <soap:operation soapAction="http://ausy.fr/training/petals/bibliotheque/emprunter/metier/1.0/retourner"
+                            style="document"/>
+            <bpmn:operation processDefinitionId="processusRetour" action="startEvent"
+                            start-event-message-name="demarrer-retour-message"/>
+            <bpmn:variable name="livre">/*[local-name()='retourner']/*[local-name()='livre']</bpmn:variable>
+            <bpmn:variable name="utilisateur">/*[local-name()='retourner']/*[local-name()='utilisateur']</bpmn:variable>
+            <bpmn:variable name="processInstanceIdCallback">/*[local-name()='retourner']/*[local-name()='processInstanceIdCallback']</bpmn:variable>
+
+            <bpmn:output>demarrerRetourResponse.xsl</bpmn:output>
+
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="notifierRetourParent">
+            <soap:operation soapAction="http://ausy.fr/training/petals/bibliotheque/emprunter/metier/1.0/notifierRetourParent"
+                            style="document"/>
+            <bpmn:operation processDefinitionId="processusEmprunter" action="intermediateMessageCatch"
+                            message-event-name="notifierRetourMessage"/>
+            <bpmn:processInstanceId>/*[local-name()='retourner']/*[local-name()='processInstanceIdParent']</bpmn:processInstanceId>
+
+            <bpmn:output>demarrerRetourResponse.xsl</bpmn:output>
+
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:fault name="pretInconnu">
+                <bpmn:fault name="ProcessInstanceNotFoundException">pretInconnu.xsl</bpmn:fault>
+                <soap:fault name="pretInconnu" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+    </wsdl:binding>
+
+    <wsdl:service name="EmprunterService">
+        <wsdl:port name="autogenerate" binding="tns:EmprunterSoapBinding">
+            <soap:address
+                location="petals:///{http://ausy.fr/training/petals/bibliotheque/emprunter/metier/1.0}EmprunterService"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

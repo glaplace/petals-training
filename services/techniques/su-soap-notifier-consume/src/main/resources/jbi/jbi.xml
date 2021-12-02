@@ -4,7 +4,7 @@
          xmlns:petalsCDK="http://petals.ow2.org/components/extensions/version-5"
          xmlns:soap="http://petals.ow2.org/components/soap/version-4"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns:notifier="http://ausy.fr/training/petals/modele/biblotheque/notifier/1.0">
+         xmlns:notifier="http://ausy.fr/training/petals/modele/bibliotheque/notifier/1.0">
     <jbi:services binding-component="true">
         <jbi:consumes interface-name="notifier:NotifierMail" service-name="notifier:NotifierMailService">
             <petalsCDK:timeout/>

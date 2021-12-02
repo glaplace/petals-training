@@ -4,9 +4,9 @@
     xmlns:cdk="http://petals.ow2.org/components/extensions/version-5"
     xmlns:jbi="http://java.sun.com/xml/ns/jbi"
     xmlns:camel="http://petals.ow2.org/components/petals-se-camel/jbi/version-1.0"
-    xmlns:emprunter="http://ausy.fr/training/petals/modele/biblotheque/emprunter/1.0"
+    xmlns:emprunter="http://ausy.fr/training/petals/bibliotheque/emprunter/technique/1.0"
     xmlns:sql="http://petals.ow2.org/components/sql/version-1"
-    xmlns:sql-bibli="http://ausy.fr/training/petals/modele/biblotheque/1.0/sql"
+    xmlns:sql-bibli="http://ausy.fr/training/petals/modele/bibliotheque/1.0/sql"
     version="1.0">
 
     <jbi:services binding-component="false">

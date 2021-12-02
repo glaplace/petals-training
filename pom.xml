@@ -29,7 +29,6 @@
     </scm>
 
     <properties>
-        <slf4j.version>1.7.30</slf4j.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java-version>1.8</java-version>
         <java-short-version>8</java-short-version>
@@ -51,7 +50,7 @@
         <petals-bc-sftp.version>1.9.1</petals-bc-sftp.version>
         <petals-bc-soap.version>5.0.1</petals-bc-soap.version>
         <petals-bc-sql.version>1.7.2</petals-bc-sql.version>
-        <petals-se-camel.version>1.2.1</petals-se-camel.version>
+        <petals-se-camel.version>1.2.2</petals-se-camel.version>
         <!-- The version of SE Flowable is driven by 'petals-se-flowable.version.base'. Add 'SNAPSHOT'
          to 'petals-se-flowable.version' to use a SNAPSHOT version -->
         <petals-se-flowable.version.base>1.3.0</petals-se-flowable.version.base>

@@ -2,8 +2,8 @@ package fr.ausy.traing.petals.services.metiers.livre.operation;
 
 import fr.ausy.traing.petals.services.metiers.livre.Routes;
 import fr.ausy.traing.petals.services.metiers.livre.sql.SQLUtils;
-import fr.ausy.training.petals.modele.biblotheque.livre._1.Rechercher;
-import fr.ausy.training.petals.modele.biblotheque.livre._1.RechercherReponse;
+import fr.ausy.training.petals.modele.bibliotheque.livre._1.Rechercher;
+import fr.ausy.training.petals.modele.bibliotheque.livre._1.RechercherReponse;
 import org.apache.commons.lang3.StringUtils;
 import org.ow2.petals.components.sql.version_1.Result;
 

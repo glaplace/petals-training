@@ -5,15 +5,15 @@
     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
     xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-    targetNamespace="http://ausy.fr/training/petals/modele/biblotheque/livre/1.0"
-    xmlns:tns="http://ausy.fr/training/petals/modele/biblotheque/livre/1.0"
+    targetNamespace="http://ausy.fr/training/petals/modele/bibliotheque/livre/1.0"
+    xmlns:tns="http://ausy.fr/training/petals/modele/bibliotheque/livre/1.0"
     xmlns:camel="http://petals.ow2.org/components/petals-se-camel/wsdl/version-1.0"
-    xmlns:modele="http://ausy.fr/training/petals/modele/biblotheque/1.0"
+    xmlns:modele="http://ausy.fr/training/petals/modele/bibliotheque/1.0"
     name="ReferentielLivre">
     <wsdl:types>
         <xsd:schema elementFormDefault="qualified"
-                    targetNamespace="http://ausy.fr/training/petals/modele/biblotheque/livre/1.0">
-            <xsd:import namespace="http://ausy.fr/training/petals/modele/biblotheque/1.0" schemaLocation="modele-bibliotheque.xsd"/>
+                    targetNamespace="http://ausy.fr/training/petals/modele/bibliotheque/livre/1.0">
+            <xsd:import namespace="http://ausy.fr/training/petals/modele/bibliotheque/1.0" schemaLocation="modele-bibliotheque.xsd"/>
 
             <xsd:element name="obtenir">
                 <xsd:complexType>
@@ -160,7 +160,7 @@
         <wsdl:operation name="obtenir">
             <camel:operation service-id="obtenir-livre"/>
             <soap:operation
-                soapAction="http://ausy.fr/training/petals/modele/biblotheque/livre/1.0/obtenir"
+                soapAction="http://ausy.fr/training/petals/modele/bibliotheque/livre/1.0/obtenir"
                 style="document"/>
             <wsdl:input>
                 <soap:body use="literal"/>
@@ -176,7 +176,7 @@
         <wsdl:operation name="creer">
             <camel:operation service-id="creer-livre"/>
             <soap:operation
-                soapAction="http://ausy.fr/training/petals/modele/biblotheque/livre/1.0/creer"
+                soapAction="http://ausy.fr/training/petals/modele/bibliotheque/livre/1.0/creer"
                 style="document"/>
             <wsdl:input>
                 <soap:body use="literal"/>
@@ -189,7 +189,7 @@
         <wsdl:operation name="modifier">
             <camel:operation service-id="modifier-livre"/>
             <soap:operation
-                soapAction="http://ausy.fr/training/petals/modele/biblotheque/livre/1.0/modifier"
+                soapAction="http://ausy.fr/training/petals/modele/bibliotheque/livre/1.0/modifier"
                 style="document"/>
             <wsdl:input>
                 <soap:body use="literal"/>
@@ -202,7 +202,7 @@
         <wsdl:operation name="supprimer">
             <camel:operation service-id="supprimer-livre"/>
             <soap:operation
-                soapAction="http://ausy.fr/training/petals/modele/biblotheque/livre/1.0/supprimer"
+                soapAction="http://ausy.fr/training/petals/modele/bibliotheque/livre/1.0/supprimer"
                 style="document"/>
             <wsdl:input>
                 <soap:body use="literal"/>
@@ -212,7 +212,7 @@
         <wsdl:operation name="rechercher">
             <camel:operation service-id="rechercher-livre"/>
             <soap:operation
-                soapAction="http://ausy.fr/training/petals/modele/biblotheque/livre/1.0/rechercher"
+                soapAction="http://ausy.fr/training/petals/modele/bibliotheque/livre/1.0/rechercher"
                 style="document"/>
             <wsdl:input>
                 <soap:body use="literal"/>

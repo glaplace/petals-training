@@ -7,14 +7,14 @@
     xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
     targetNamespace="http://openlibrary.org/api/1.0"
-    xmlns:modele="http://ausy.fr/training/petals/modele/biblotheque/1.0"
+    xmlns:modele="http://ausy.fr/training/petals/modele/bibliotheque/1.0"
     name="OpenlibraryService">
 
     <wsdl:types>
         <xsd:schema
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             targetNamespace="http://openlibrary.org/api/1.0">
-            <xsd:import namespace="http://ausy.fr/training/petals/modele/biblotheque/1.0"
+            <xsd:import namespace="http://ausy.fr/training/petals/modele/bibliotheque/1.0"
                         schemaLocation="modele-bibliotheque.xsd"/>
             <!--Obtenir informations dossier-->
             <xsd:element name="obtenir-par-isbn">

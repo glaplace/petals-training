@@ -4,8 +4,8 @@
                   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
                   xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
                   xmlns:sql="http://petals.ow2.org/components/sql/version-1"
-                  xmlns:tns="http://ausy.fr/training/petals/modele/biblotheque/1.0/sql"
-                  targetNamespace="http://ausy.fr/training/petals/modele/biblotheque/1.0/sql">
+                  xmlns:tns="http://ausy.fr/training/petals/modele/bibliotheque/1.0/sql"
+                  targetNamespace="http://ausy.fr/training/petals/modele/bibliotheque/1.0/sql">
 
     <wsdl:import namespace="http://petals.ow2.org/components/sql/version-1" location="SQLInterface.wsdl"/>
 

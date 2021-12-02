@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<response>
+    <publishers>Milady</publishers>
+    <description>
+        <type>/type/text</type>
+        <value>Son nom est Druss. Garçon violent et maladroit, il vit dans un petit village de paysans situé au pied des
+            montagnes du pays drenaï. Bûcheron hargneux le jour, époux tendre le soir, il mène une existence paisible au
+            milieu des bois. Jusqu'au jour où une troupe de mercenaires envahit le village pour tuer tous les hommes et
+            capturer toutes les femmes. Druss, alors dans la forêt, arrive trop tard sur les lieux du massacre. Le
+            village est détruit, son père gît dans une mare de sang. Et Rowena, sa femme, a disparu... S'armant de
+            Snaga, une hache ayant appartenu à son grand-père, il part à la poursuite des ravisseurs. Déterminé à
+            retrouver son épouse, rien ne devra se mettre en travers de son chemin. Mais la route sera longue pour ce
+            jeune homme inexpérimenté. Car sa quête le mènera jusqu'au bout du monde. Il deviendra lutteur et
+            mercenaire, il fera tomber des royaumes, il en élèvera d'autres, il combattra bêtes, hommes et démons. Car
+            il est Druss... et voici sa légende...
+        </value>
+    </description>
+    <links>
+        <url>http://catalogue.bnf.fr/ark:/12148/cb42193153c</url>
+        <title>Notice et cote du catalogue de la Bibliothèque nationale de France</title>
+    </links>
+    <series>Drenaï</series>
+    <covers>10321256</covers>
+    <full_title>Druss la légende</full_title>
+    <last_modified>
+        <type>/type/datetime</type>
+        <value>2020-07-31T05:05:01.648434</value>
+    </last_modified>
+    <latest_revision>1</latest_revision>
+    <key>/books/OL28422271M</key>
+    <authors>
+        <key>/authors/OL8027105A</key>
+    </authors>
+    <ocaid>drusslalegende0000gemm</ocaid>
+    <publish_places>Paris</publish_places>
+    <contributions>Névant, Alain</contributions>
+    <isbn_13>9782811202569</isbn_13>
+    <pagination>1 vol. (507 p.)</pagination>
+    <source_records>
+        <ia>drusslalegende0000gemm</ia>
+    </source_records>
+    <title>Druss la légende</title>
+    <work_titles>First chronicles of Druss the legend</work_titles>
+    <number_of_pages>507</number_of_pages>
+    <created>{
+        <type>/type/datetime,</type>
+        <value>2020-07-31T05:05:01.648434</value>
+    </created>
+    <languages>
+        <key>/languages/fre</key>
+    </languages>
+    <isbn_10>2811202560</isbn_10>
+    <publish_date>2009</publish_date>
+    <publish_country>fr</publish_country>
+    <by_statement>David Gemmell ; traduit de l'anglais (Grande-Bretagne) par Alain Névant</by_statement>
+    <oclc_numbers>762808577</oclc_numbers>
+    <works>
+        <key>/works/OL20984230W</key>
+    </works>
+    <type>
+        <key>/type/edition</key>
+    </type>
+    <revision>1</revision>
+</response>

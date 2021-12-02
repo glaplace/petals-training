@@ -1,10 +1,10 @@
 package fr.ausy.traing.petals.services.metiers.livre.operation;
 
 import fr.ausy.traing.petals.services.metiers.livre.Routes;
-import fr.ausy.training.petals.modele.biblotheque._1.Livre;
-import fr.ausy.training.petals.modele.biblotheque.livre._1.Obtenir;
-import fr.ausy.training.petals.modele.biblotheque.livre._1.ObtenirReponse;
-import fr.ausy.training.petals.modele.biblotheque.livre._1.Supprimer;
+import fr.ausy.training.petals.modele.bibliotheque._1.Livre;
+import fr.ausy.training.petals.modele.bibliotheque.livre._1.Obtenir;
+import fr.ausy.training.petals.modele.bibliotheque.livre._1.ObtenirReponse;
+import fr.ausy.training.petals.modele.bibliotheque.livre._1.Supprimer;
 import junit.framework.TestCase;
 import org.apache.camel.Exchange;
 import org.apache.camel.ExchangePattern;

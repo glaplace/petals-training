@@ -15,6 +15,7 @@
     <modules>
         <module>sa-bibliotheque</module>
         <module>su-camel-livre-provide</module>
+        <module>su-flowable-emprunt-provide</module>
     </modules>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

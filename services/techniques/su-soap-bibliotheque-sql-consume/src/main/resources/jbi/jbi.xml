@@ -5,7 +5,7 @@
          xmlns:soap="http://petals.ow2.org/components/soap/version-4"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns:sql="http://petals.ow2.org/components/sql/version-1"
-         xmlns:bsql="http://ausy.fr/training/petals/modele/biblotheque/1.0/sql"
+         xmlns:bsql="http://ausy.fr/training/petals/modele/bibliotheque/1.0/sql"
 >
 
     <jbi:services binding-component="true">
