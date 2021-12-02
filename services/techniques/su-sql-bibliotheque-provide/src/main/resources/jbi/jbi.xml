@@ -20,8 +20,10 @@
             <!-- Component specific elements -->
             <sql:driver>${ausy.training.sql.jdbc.driver}</sql:driver>
             <sql:url>${ausy.training.sql.jdbc.url}</sql:url>
-            <sql:user>${ausy.training.sql.jdbc.user}</sql:user>
-            <sql:password>${ausy.training.sql.jdbc.password}</sql:password>
+            <sql:user/>
+            <sql:password/>
+<!--            <sql:user>${ausy.training.sql.jdbc.user}</sql:user>-->
+<!--            <sql:password>${ausy.training.sql.jdbc.password}</sql:password>-->
             <sql:maxActive>8</sql:maxActive>
             <sql:maxIdle>8</sql:maxIdle>
             <sql:minIdle>0</sql:minIdle>

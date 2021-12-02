@@ -5,7 +5,8 @@
     xmlns:cdk="http://petals.ow2.org/components/extensions/version-5"
     xmlns:petals-se-flowable="http://petals.ow2.org/components/petals-se-flowable/1.0"
     xmlns:metier="http://ausy.fr/training/petals/bibliotheque/emprunter/metier/1.0"
-    xmlns:orchestration="http://www.ille-et-vilaine.fr/services/support/finances/subvention/orchestration/flowable/association/2.0"
+    xmlns:technique="http://ausy.fr/training/petals/bibliotheque/emprunter/technique/1.0"
+    xmlns:notifier="http://ausy.fr/training/petals/modele/bibliotheque/notifier/1.0"
     version="1.0">
 
     <jbi:services binding-component="false">
@@ -18,18 +19,53 @@
             <cdk:wsdl>processus-emprunt.wsdl</cdk:wsdl>
         </jbi:provides>
 
-        <jbi:consumes interface-name="orchestration:OrchestrationSubventionAssociation"
-                      service-name="orchestration:OrchestrationSubventionAssociationService">
+        <jbi:consumes interface-name="metier:OrchestrationSubventionAssociation"
+                      service-name="metier:OrchestrationSubventionAssociationService">
             <cdk:mep>InOut</cdk:mep>
-            <cdk:operation>orchestration:create</cdk:operation>
+            <cdk:operation>metier:notifierRetourParent</cdk:operation>
             <cdk:timeout>360000</cdk:timeout>
         </jbi:consumes>
 
+        <jbi:consumes interface-name="notifier:NotifierMail"
+                      service-name="notifier:NotifierMailService">
+            <cdk:mep>InOut</cdk:mep>
+            <cdk:operation>notifier:notifier</cdk:operation>
+            <cdk:timeout>360000</cdk:timeout>
+        </jbi:consumes>
+
+        <jbi:consumes interface-name="technique:EmprunterLivreTechnique"
+                      service-name="technique:EmprunterlLivreService">
+            <cdk:mep>InOut</cdk:mep>
+            <cdk:operation>technique:ajouterEmprunt</cdk:operation>
+            <cdk:timeout>360000</cdk:timeout>
+        </jbi:consumes>
+
+        <jbi:consumes interface-name="technique:EmprunterLivreTechnique"
+                      service-name="technique:EmprunterlLivreService">
+            <cdk:mep>InOut</cdk:mep>
+            <cdk:operation>technique:livreEstDejaEmprunte</cdk:operation>
+            <cdk:timeout>360000</cdk:timeout>
+        </jbi:consumes>
+
+        <jbi:consumes interface-name="technique:EmprunterLivreTechnique"
+                      service-name="technique:EmprunterlLivreService">
+            <cdk:mep>InOut</cdk:mep>
+            <cdk:operation>technique:retournerEmprunt</cdk:operation>
+            <cdk:timeout>360000</cdk:timeout>
+        </jbi:consumes>
+
+
         <!-- SE Flowable specific fields -->
         <petals-se-flowable:tenant_id>ausy-training</petals-se-flowable:tenant_id>
-        <petals-se-flowable:category_id>biblitotheque emprunt</petals-se-flowable:category_id>
-        <petals-se-flowable:process_file1>Emprunter_livre.bpmn20.xml</petals-se-flowable:process_file1>
+        <petals-se-flowable:category_id>biblitotheque</petals-se-flowable:category_id>
+
+        <!-- Processus Emprunt -->
+        <petals-se-flowable:process_file1>emprunter_livre.bpmn20.xml</petals-se-flowable:process_file1>
         <petals-se-flowable:version1>1</petals-se-flowable:version1>
+
+        <!-- Processus Retour -->
+        <petals-se-flowable:process_file2>rendre_livre.bpmn20.xml</petals-se-flowable:process_file2>
+        <petals-se-flowable:version2>1</petals-se-flowable:version2>
 
     </jbi:services>
 </jbi:jbi>

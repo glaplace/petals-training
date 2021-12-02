@@ -53,7 +53,7 @@
             <xsd:element name="notifierRetourParent">
                 <xsd:complexType>
                     <xsd:sequence>
-                        <xsd:element name="processInstanceIdParent" type="xsd:int"/>
+                        <xsd:element name="processInstanceIdParent" type="xsd:long"/>
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
@@ -158,7 +158,7 @@
                             style="document"/>
             <bpmn:operation processDefinitionId="processusEmprunter" action="intermediateMessageCatch"
                             message-event-name="notifierRetourMessage"/>
-            <bpmn:processInstanceId>/*[local-name()='retourner']/*[local-name()='processInstanceIdParent']</bpmn:processInstanceId>
+            <bpmn:processInstanceId>/*[local-name()='notifierRetourParent']/*[local-name()='processInstanceIdParent']</bpmn:processInstanceId>
 
             <bpmn:output>demarrerRetourResponse.xsl</bpmn:output>
 

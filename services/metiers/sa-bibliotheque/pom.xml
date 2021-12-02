@@ -42,6 +42,12 @@
             <version>${project.version}</version>
             <type>jbi-service-unit</type>
         </dependency>
+        <dependency>
+            <groupId>fr.ausy.traing.petals.services.metiers</groupId>
+            <artifactId>su-flowable-emprunt-provide</artifactId>
+            <version>${project.version}</version>
+            <type>jbi-service-unit</type>
+        </dependency>
     </dependencies>
 
     <build>

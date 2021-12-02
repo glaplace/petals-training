@@ -22,13 +22,13 @@
         </xsd:schema>
     </wsdl:types>
 
-    <wsdl:message name="notifierRequete">
+    <wsdl:message name="notifier">
         <wsdl:part name="parameters" element="tns:notifier"/>
     </wsdl:message>
 
     <wsdl:portType name="NotifierMail">
         <wsdl:operation name="notifier">
-            <wsdl:input message="tns:notifierRequete"/>
+            <wsdl:input message="tns:notifier"/>
         </wsdl:operation>
     </wsdl:portType>
 
@@ -56,7 +56,8 @@
 
     <wsdl:service name="NotifierMailService">
         <wsdl:port name="autogenerate" binding="tns:NotifierMailBinding">
-            <soap:address location="http://localhost:9003/NotifierMailService"/>
+            <soap:address location="jbi://autogenerate"/>
+<!--            <soap:address location="http://localhost:9003/NotifierMailService"/>-->
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>

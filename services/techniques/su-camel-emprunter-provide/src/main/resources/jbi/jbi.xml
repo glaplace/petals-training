@@ -24,7 +24,7 @@
         </jbi:consumes>
 
         <jbi:consumes interface-name="sql:SQLInterface" service-name="sql-bibli:BibliothequeSQLService">
-            <cdk:mep>InOnly</cdk:mep>
+            <cdk:mep>InOut</cdk:mep>
             <cdk:operation>sql:insertWithResponse</cdk:operation>
             <cdk:timeout>360000</cdk:timeout>
             <camel:service-id>sql-insert</camel:service-id>

@@ -27,7 +27,7 @@ public class EnregistrerRetourOperationTest extends AbstractOperationTest {
 
     @Test
     public void retourTest() throws InterruptedException {
-        creerMockSqlInsert(true);
+        creerMockSqlUpdate(true);
         final Exchange exchange = template().send(getFrom(Routes.RETOURNER_EMPRUNT), ExchangePattern.InOnly, new Step("Test retourner livre") {
             @Override
             public void process(final Exchange exchange) throws Exception {
@@ -47,7 +47,7 @@ public class EnregistrerRetourOperationTest extends AbstractOperationTest {
 
     @Test
     public void retourKoTest() throws InterruptedException {
-        creerMockSqlInsert(false);
+        creerMockSqlUpdate(false);
         final Exchange exchange = template().send(getFrom(Routes.RETOURNER_EMPRUNT), ExchangePattern.InOnly, new Step("Test retourner livre") {
             @Override
             public void process(final Exchange exchange) throws Exception {
@@ -72,13 +72,13 @@ public class EnregistrerRetourOperationTest extends AbstractOperationTest {
     /**
      * Mock du service SQL d'insertion.
      */
-    private void creerMockSqlInsert(final boolean resultOk) {
+    private void creerMockSqlUpdate(final boolean resultOk) {
         final MockEndpoint mock = getTo(Routes.SQL_UPDATE);
         mock.expectedMessageCount(1);
 
         mock.whenAnyExchangeReceived(exchange -> {
             final String sql = service.unmarshal(exchange.getIn(), String.class);
-            final String select = "update pret (RENDU) values (true) where livre_id = " + LIVRE_ID + " and utilisateur_id = " + UTILISATEUR_ID;
+            final String select = "update pret set RENDU=true where livre_id = " + LIVRE_ID + " and utilisateur_id = " + UTILISATEUR_ID;
 
             org.assertj.core.api.Assertions.assertThat(sql)
                 .isNotNull()

@@ -248,6 +248,7 @@
                 <flowNodeRef>sid-BE78A12C-6645-4EB7-9BCC-AC10F709A5DB</flowNodeRef>
             </lane>
         </laneSet>
+
         <!-- Processus de retour -->
         <startEvent id="demarrer-retour">
             <extensionElements>

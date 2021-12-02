@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:flowable="http://flowable.org/bpmn"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+             typeLanguage="http://www.w3.org/2001/XMLSchema"
+             expressionLanguage="http://www.w3.org/1999/XPath"
+             targetNamespace="http://ausy.fr/training/petals/bibliotheque/emprunter/processus/1.0"
+             xmlns:process="http://ausy.fr/training/petals/bibliotheque/emprunter/processus/1.0"
+             xmlns:technique="http://ausy.fr/training/petals/bibliotheque/emprunter/technique/1.0"
+             xmlns:notifier="http://ausy.fr/training/petals/bibliotheque/technique/notifier/1.0"
+             xmlns:metier="http://ausy.fr/training/petals/bibliotheque/emprunter/metier/1.0"
+             exporter="Flowable Open Source Modeler"
+             exporterVersion="6.7.1">
+    <import importType="http://schemas.xmlsoap.org/wsdl/"
+            location="emprunter-livre.wsdl"
+            namespace="http://ausy.fr/training/petals/bibliotheque/emprunter/technique/1.0"/>
+
+    <import importType="http://schemas.xmlsoap.org/wsdl/"
+            location="notifier-mail.wsdl"
+            namespace="http://ausy.fr/training/petals/bibliotheque/technique/notifier/1.0"/>
+    <collaboration id="Collaboration">
+        <participant id="processusEmprunter_p" name="Emprunter" processRef="processusEmprunter"/>
+    </collaboration>
+
+    <!-- Start event -->
+    <message id="demarrer-emprunt-message" name="demarrer-emprunt-message"/>
+    <!-- Message event -->
+    <!-- Message event -->
+    <itemDefinition id="notifierRetourParentItem" structureRef="metier:notifierRetourParent"/>
+    <message id="notifierRetourMessage" name="notifierRetourMessage" itemRef="process:notifierRetourParentItem"/>
+
+    <!-- Service technique -->
+    <itemDefinition id="livreEstDejaEmprunteItem" structureRef="technique:livreEstDejaEmprunte"/>
+    <message id="livreEstDejaEmprunteMessage" name="livreEstDejaEmprunteMessage" itemRef="process:livreEstDejaEmprunteItem"/>
+    <itemDefinition id="livreEstDejaEmprunteReponseItem" structureRef="technique:livreEstDejaEmprunteReponse"/>
+    <message id="livreEstDejaEmprunteReponseMessage" name="livreEstDejaEmprunteReponseMessage" itemRef="process:livreEstDejaEmprunteReponseItem"/>
+
+    <itemDefinition id="ajouterEmpruntItem" structureRef="technique:ajouterEmprunt"/>
+    <message id="ajouterEmpruntMessage" name="ajouterEmpruntMessage" itemRef="process:ajouterEmpruntItem"/>
+
+    <interface name="Service technique" implementationRef="technique:EmprunterLivreTechnique">
+        <operation name="Est-ce que le livre est déjà emprunté" id="livreEstDejaEmprunteOperation"
+                   implementationRef="technique:livreEstDejaEmprunte">
+            <inMessageRef>process:livreEstDejaEmprunteMessage</inMessageRef>
+            <outMessageRef>process:livreEstDejaEmprunteReponseMessage</outMessageRef>
+        </operation>
+
+        <operation name="enregistrer l'emprunt" id="ajouterEmpruntOperation"
+                   implementationRef="technique:ajouterEmprunt">
+            <inMessageRef>process:ajouterEmpruntMessage</inMessageRef>
+        </operation>
+    </interface>
+
+    <!-- Service notifier -->
+    <itemDefinition id="notifierItem" structureRef="notifier:notifier"/>
+    <message id="notifierMessage" name="notifierMessage" itemRef="process:notifierItem"/>
+    <interface name="Service notifier" implementationRef="notifier:NotifierMail">
+        <operation name="notifier mail" id="notifierOperation"
+                   implementationRef="notifier:notifier">
+            <inMessageRef>process:notifierMessage</inMessageRef>
+        </operation>
+    </interface>
+
+    <process id="processusEmprunter" name="Emprunter" isExecutable="true">
+        <laneSet id="laneSet_processusEmprunter">
+            <lane id="sid-BBC60DF6-61A6-45B5-91F1-FC804545EA88">
+                <flowNodeRef>demarrer-emprunt</flowNodeRef>
+                <flowNodeRef>livre-disponible-task</flowNodeRef>
+                <flowNodeRef>sid-0FF63F09-0A36-44DB-A14F-B32937709382</flowNodeRef>
+                <flowNodeRef>ajouter-emprunt-task</flowNodeRef>
+                <flowNodeRef>retour-event</flowNodeRef>
+                <flowNodeRef>sid-A7A10D89-CDC1-4E72-82B3-1D035B801298</flowNodeRef>
+                <flowNodeRef>fin-emprunt</flowNodeRef>
+                <flowNodeRef>notifier-emprunt-impossible-task</flowNodeRef>
+                <flowNodeRef>sid-8BC6C99D-5A28-44EB-97E7-07D6722E28F9</flowNodeRef>
+                <flowNodeRef>sid-F8A89ABA-9569-4143-9592-C6644132EED1</flowNodeRef>
+                <flowNodeRef>sid-F441919E-0906-49FE-B8BA-7A1E1942D345</flowNodeRef>
+                <flowNodeRef>sid-271A4856-86EE-4232-91AD-651874B36360</flowNodeRef>
+                <flowNodeRef>sid-0C7A7333-4287-4D19-9D7A-5B4E16552B14</flowNodeRef>
+                <flowNodeRef>sid-15C49D18-3808-4753-8AD7-4D02B599BE06</flowNodeRef>
+                <flowNodeRef>sid-7F9A416D-43BE-47E0-8134-600107E2BAD9</flowNodeRef>
+                <flowNodeRef>sid-A559992C-8602-4B6A-AE6F-4FD0CD54117C</flowNodeRef>
+            </lane>
+        </laneSet>
+        <dataObject id="livreDisponible" name="livreDisponible" itemSubjectRef="xsd:boolean">
+            <extensionElements>
+                <flowable:value>false</flowable:value>
+            </extensionElements>
+        </dataObject>
+
+        <startEvent id="demarrer-emprunt" isInterrupting="true">
+            <extensionElements>
+                <flowable:formProperty id="livre" name="livre" type="long" required="true"/>
+                <flowable:formProperty id="utilisateur" name="utilisateur" type="long" required="true"/>
+            </extensionElements>
+            <messageEventDefinition messageRef="demarrer-emprunt-message"/>
+        </startEvent>
+
+        <serviceTask id="livre-disponible-task" name="Livre libre ?" implementation="##WebService"
+                     operationRef="process:livreEstDejaEmprunteOperation">
+            <documentation>Vérifier si le livre est disponible ou non</documentation>
+            <ioSpecification>
+                <dataInput itemSubjectRef="process:livreEstDejaEmprunteItem" id="dataInputOfLivreEmprunte"/>
+                <dataOutput itemSubjectRef="process:livreEstDejaEmprunteReponseItem" id="dataOutpuOfLivreEmprunte"/>
+                <inputSet>
+                    <dataInputRefs>dataInputOfLivreEmprunte</dataInputRefs>
+                </inputSet>
+                <outputSet>
+                    <dataOutputRefs>dataOutpuOfLivreEmprunte</dataOutputRefs>
+                </outputSet>
+            </ioSpecification>
+
+            <dataInputAssociation>
+                <targetRef>dataInputOfLivreEmprunte</targetRef>
+                <assignment>
+                    <from>${livre}</from>
+                    <to>${dataInputOfLivreEmprunte.identifiant}</to>
+                </assignment>
+            </dataInputAssociation>
+
+            <dataOutputAssociation>
+                <targetRef>livreDisponible</targetRef>
+                <transformation>${!dataOutpuOfLivreEmprunte.dejaEmprunter}</transformation>
+            </dataOutputAssociation>
+        </serviceTask>
+
+        <exclusiveGateway id="sid-0FF63F09-0A36-44DB-A14F-B32937709382" default="sid-15C49D18-3808-4753-8AD7-4D02B599BE06"/>
+        <serviceTask id="ajouter-emprunt-task" name="Ajouter emprunt" implementation="##WebService"
+                     operationRef="process:ajouterEmpruntOperation">
+            <documentation>Ajouter l'emprunt en base</documentation>
+            <ioSpecification>
+                <dataInput itemSubjectRef="process:ajouterEmpruntItem" id="dataInputOfAjouterEmprunt"/>
+                <inputSet>
+                    <dataInputRefs>dataInputOfAjouterEmprunt</dataInputRefs>
+                </inputSet>
+                <outputSet/>
+            </ioSpecification>
+
+            <dataInputAssociation>
+                <targetRef>dataInputOfAjouterEmprunt</targetRef>
+                <assignment>
+                    <from>${livre}</from>
+                    <to>${dataInputOfAjouterEmprunt.livre}</to>
+                </assignment>
+                <assignment>
+                    <from>${utilisateur}</from>
+                    <to>${dataInputOfAjouterEmprunt.utilisateur}</to>
+                </assignment>
+            </dataInputAssociation>
+        </serviceTask>
+
+        <intermediateCatchEvent id="retour-event" name="Attente retour du livre">
+            <documentation>Attente de la fin du processus de retour.</documentation>
+            <messageEventDefinition messageRef="process:notifierRetourMessage"/>
+        </intermediateCatchEvent>
+
+        <exclusiveGateway id="sid-A7A10D89-CDC1-4E72-82B3-1D035B801298" default="sid-7F9A416D-43BE-47E0-8134-600107E2BAD9"/>
+
+        <endEvent id="fin-emprunt">
+            <terminateEventDefinition/>
+        </endEvent>
+
+        <serviceTask id="notifier-emprunt-impossible-task" name="Notification emprunt impossible" implementation="##WebService"
+                     operationRef="process:notifierOperation">
+            <documentation>Ajouter l'emprunt en base</documentation>
+            <ioSpecification>
+                <dataInput itemSubjectRef="process:notifierItem" id="dataInputOfNotifierEmpruntImpossible"/>
+                <inputSet>
+                    <dataInputRefs>dataInputOfNotifierEmpruntImpossible</dataInputRefs>
+                </inputSet>
+                <outputSet/>
+            </ioSpecification>
+
+            <dataInputAssociation>
+                <targetRef>dataInputOfNotifierEmpruntImpossible</targetRef>
+                <assignment>
+                    <from>${'Livre déjà emprunté'}</from>
+                    <to>${dataInputOfNotifierEmpruntImpossible.sujet}</to>
+                </assignment>
+                <assignment>
+                    <!-- FIXME voir si ça fonctionne sinon voir avec concat O_o -->
+                    <from>${''.format('Le livre %d est déjà emprunté', livre)}</from>
+                    <to>${dataInputOfNotifierEmpruntImpossible.message}</to>
+                </assignment>
+                <assignment>
+                    <from>${'user@ausy.bzh'}</from>
+                    <to>${dataInputOfNotifierEmpruntImpossible.destinataire}</to>
+                </assignment>
+            </dataInputAssociation>
+        </serviceTask>
+
+        <sequenceFlow id="sid-8BC6C99D-5A28-44EB-97E7-07D6722E28F9" sourceRef="demarrer-emprunt" targetRef="livre-disponible-task"/>
+        <sequenceFlow id="sid-F8A89ABA-9569-4143-9592-C6644132EED1" sourceRef="livre-disponible-task"
+                      targetRef="sid-0FF63F09-0A36-44DB-A14F-B32937709382"/>
+        <sequenceFlow id="sid-F441919E-0906-49FE-B8BA-7A1E1942D345" sourceRef="ajouter-emprunt-task" targetRef="retour-event"/>
+        <sequenceFlow id="sid-271A4856-86EE-4232-91AD-651874B36360" sourceRef="retour-event" targetRef="sid-A7A10D89-CDC1-4E72-82B3-1D035B801298"/>
+        <sequenceFlow id="sid-0C7A7333-4287-4D19-9D7A-5B4E16552B14" sourceRef="notifier-emprunt-impossible-task"
+                      targetRef="sid-A7A10D89-CDC1-4E72-82B3-1D035B801298"/>
+        <sequenceFlow id="sid-15C49D18-3808-4753-8AD7-4D02B599BE06" sourceRef="sid-0FF63F09-0A36-44DB-A14F-B32937709382"
+                      targetRef="notifier-emprunt-impossible-task"/>
+        <sequenceFlow id="sid-7F9A416D-43BE-47E0-8134-600107E2BAD9" sourceRef="sid-A7A10D89-CDC1-4E72-82B3-1D035B801298" targetRef="fin-emprunt"/>
+        <sequenceFlow id="sid-A559992C-8602-4B6A-AE6F-4FD0CD54117C" sourceRef="sid-0FF63F09-0A36-44DB-A14F-B32937709382"
+                      targetRef="ajouter-emprunt-task">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${livreDisponible}]]></conditionExpression>
+        </sequenceFlow>
+    </process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_Collaboration">
+        <bpmndi:BPMNPlane bpmnElement="Collaboration" id="BPMNPlane_Collaboration">
+            <bpmndi:BPMNShape bpmnElement="processusEmprunter_p" id="BPMNShape_processusEmprunter">
+                <omgdc:Bounds height="249.0" width="948.0" x="20.0" y="4.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="sid-BBC60DF6-61A6-45B5-91F1-FC804545EA88" id="BPMNShape_sid-BBC60DF6-61A6-45B5-91F1-FC804545EA88">
+                <omgdc:Bounds height="249.0" width="918.0" x="50.0" y="4.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="demarrer-emprunt" id="BPMNShape_demarrer-emprunt">
+                <omgdc:Bounds height="30.0" width="30.5" x="75.0" y="70.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="livre-disponible-task" id="BPMNShape_livre-disponible-task">
+                <omgdc:Bounds height="80.0" width="100.0" x="163.25" y="45.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="sid-0FF63F09-0A36-44DB-A14F-B32937709382" id="BPMNShape_sid-0FF63F09-0A36-44DB-A14F-B32937709382">
+                <omgdc:Bounds height="40.0" width="40.0" x="330.25" y="65.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="ajouter-emprunt-task" id="BPMNShape_ajouter-emprunt-task">
+                <omgdc:Bounds height="80.0" width="100.0" x="444.625" y="45.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="retour-event" id="BPMNShape_retour-event">
+                <omgdc:Bounds height="30.0" width="30.0" x="600.25" y="70.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="sid-A7A10D89-CDC1-4E72-82B3-1D035B801298" id="BPMNShape_sid-A7A10D89-CDC1-4E72-82B3-1D035B801298">
+                <omgdc:Bounds height="40.0" width="40.0" x="695.25" y="65.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="fin-emprunt" id="BPMNShape_fin-emprunt">
+                <omgdc:Bounds height="28.0" width="28.0" x="807.25" y="71.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="notifier-emprunt-impossible-task" id="BPMNShape_notifier-emprunt-impossible-task">
+                <omgdc:Bounds height="80.0" width="100.0" x="444.625" y="156.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge bpmnElement="sid-15C49D18-3808-4753-8AD7-4D02B599BE06" id="BPMNEdge_sid-15C49D18-3808-4753-8AD7-4D02B599BE06"
+                             flowable:sourceDockerX="20.5" flowable:sourceDockerY="20.5" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+                <omgdi:waypoint x="350.75" y="104.44143309222422"/>
+                <omgdi:waypoint x="350.75" y="196.0"/>
+                <omgdi:waypoint x="444.625" y="196.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-F441919E-0906-49FE-B8BA-7A1E1942D345" id="BPMNEdge_sid-F441919E-0906-49FE-B8BA-7A1E1942D345"
+                             flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="15.0" flowable:targetDockerY="15.0">
+                <omgdi:waypoint x="544.5749999999915" y="85.0"/>
+                <omgdi:waypoint x="600.25" y="85.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-0C7A7333-4287-4D19-9D7A-5B4E16552B14" id="BPMNEdge_sid-0C7A7333-4287-4D19-9D7A-5B4E16552B14"
+                             flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="20.0" flowable:targetDockerY="20.0">
+                <omgdi:waypoint x="544.5749999997454" y="196.0"/>
+                <omgdi:waypoint x="715.25" y="196.0"/>
+                <omgdi:waypoint x="715.25" y="104.90894950405773"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-271A4856-86EE-4232-91AD-651874B36360" id="BPMNEdge_sid-271A4856-86EE-4232-91AD-651874B36360"
+                             flowable:sourceDockerX="15.0" flowable:sourceDockerY="15.0" flowable:targetDockerX="20.0" flowable:targetDockerY="20.0">
+                <omgdi:waypoint x="630.1999981730181" y="85.0"/>
+                <omgdi:waypoint x="695.25" y="85.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-A559992C-8602-4B6A-AE6F-4FD0CD54117C" id="BPMNEdge_sid-A559992C-8602-4B6A-AE6F-4FD0CD54117C"
+                             flowable:sourceDockerX="20.5" flowable:sourceDockerY="20.5" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+                <omgdi:waypoint x="369.7594354417097" y="85.43374019180472"/>
+                <omgdi:waypoint x="444.6249999999966" y="85.17358818418766"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-8BC6C99D-5A28-44EB-97E7-07D6722E28F9" id="BPMNEdge_sid-8BC6C99D-5A28-44EB-97E7-07D6722E28F9"
+                             flowable:sourceDockerX="15.5" flowable:sourceDockerY="15.0" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+                <omgdi:waypoint x="105.94999866144884" y="85.0"/>
+                <omgdi:waypoint x="163.25" y="85.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-F8A89ABA-9569-4143-9592-C6644132EED1" id="BPMNEdge_sid-F8A89ABA-9569-4143-9592-C6644132EED1"
+                             flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="20.0" flowable:targetDockerY="20.0">
+                <omgdi:waypoint x="263.20000000000005" y="85.0"/>
+                <omgdi:waypoint x="330.25" y="85.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-7F9A416D-43BE-47E0-8134-600107E2BAD9" id="BPMNEdge_sid-7F9A416D-43BE-47E0-8134-600107E2BAD9"
+                             flowable:sourceDockerX="20.5" flowable:sourceDockerY="20.5" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+                <omgdi:waypoint x="734.7811370123682" y="85.40952380952382"/>
+                <omgdi:waypoint x="807.2501512581246" y="85.06611311358867"/>
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</definitions>

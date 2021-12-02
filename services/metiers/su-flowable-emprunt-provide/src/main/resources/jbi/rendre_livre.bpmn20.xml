@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:flowable="http://flowable.org/bpmn"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+             typeLanguage="http://www.w3.org/2001/XMLSchema"
+             expressionLanguage="http://www.w3.org/1999/XPath"
+             targetNamespace="http://ausy.fr/training/petals/bibliotheque/emprunter/processus/1.0"
+             xmlns:process="http://ausy.fr/training/petals/bibliotheque/emprunter/processus/1.0"
+             xmlns:technique="http://ausy.fr/training/petals/bibliotheque/emprunter/technique/1.0"
+             xmlns:metier="http://ausy.fr/training/petals/bibliotheque/emprunter/metier/1.0"
+             exporter="Flowable Open Source Modeler"
+             exporterVersion="6.7.1">
+
+    <import importType="http://schemas.xmlsoap.org/wsdl/"
+            location="emprunter-livre.wsdl"
+            namespace="http://ausy.fr/training/petals/bibliotheque/emprunter/technique/1.0"/>
+
+    <import importType="http://schemas.xmlsoap.org/wsdl/"
+            location="processus-emprunt.wsdl"
+            namespace="http://ausy.fr/training/petals/bibliotheque/emprunter/metier/1.0"/>
+
+    <collaboration id="Collaboration">
+        <participant id="processusRetour_p" name="Processus retour" processRef="processusRetour"/>
+    </collaboration>
+
+    <!-- Start-event  -->
+    <message id="demarrer-retour-message" name="demarrer-retour-message"/>
+
+    <itemDefinition id="notifierRetourParentItem" structureRef="metier:notifierRetourParent"/>
+    <message id="notifierRetourMessage" name="notifierRetourMessage" itemRef="process:notifierRetourParentItem"/>
+
+    <!-- Interface sur le service processus -->
+    <interface name="self" implementationRef="metier:Emprunter">
+        <operation name="notifierRetourParent" id="notifierRetourParentOperation" implementationRef="metier:notifierRetourParent">
+            <inMessageRef>process:notifierRetourMessage</inMessageRef>
+        </operation>
+    </interface>
+
+    <!-- Service technique -->
+    <itemDefinition id="retournerEmpruntItem" structureRef="technique:retournerEmprunt"/>
+    <message id="retournerEmpruntMessage" name="retournerEmpruntMessage" itemRef="process:retournerEmpruntItem"/>
+    <interface name="Service technique" implementationRef="technique:EmprunterLivreTechnique">
+        <operation name="Enregistrer le retour du livre en base" id="retournerEmpruntOperation"
+                   implementationRef="technique:retournerEmprunt">
+            <inMessageRef>process:retournerEmpruntMessage</inMessageRef>
+        </operation>
+    </interface>
+
+    <process id="processusRetour" name="Processus retour" isExecutable="true">
+        <laneSet id="laneSet_processusRetour">
+            <lane id="sid-9ABEB5E2-5362-4DB9-8B4E-484DB0E0AEB9">
+                <flowNodeRef>demarrer-retour</flowNodeRef>
+                <flowNodeRef>enregistrer-retour-task</flowNodeRef>
+                <flowNodeRef>notifier-retour-task</flowNodeRef>
+                <flowNodeRef>fin-retour</flowNodeRef>
+                <flowNodeRef>sid-7B98FF37-F83E-410E-BD3B-2020A812DE2B</flowNodeRef>
+                <flowNodeRef>sid-AEA74AD1-608D-4C29-A5A3-F0B6F7CDC2FB</flowNodeRef>
+                <flowNodeRef>sid-04F2D4E3-5030-497E-A671-0C5419A82B12</flowNodeRef>
+            </lane>
+        </laneSet>
+        <startEvent id="demarrer-retour">
+            <extensionElements>
+                <flowable:formProperty id="livre" name="livre" type="long" required="true"/>
+                <flowable:formProperty id="utilisateur" name="utilisateur" type="long" required="true"/>
+                <flowable:formProperty id="processInstanceIdCallback" name="processInstanceIdCallback" type="long" required="true"/>
+            </extensionElements>
+            <messageEventDefinition messageRef="demarrer-retour-message"/>
+        </startEvent>
+        <serviceTask id="enregistrer-retour-task" name="Enregistrer le retour" implementation="##WebService"
+                     operationRef="process:retournerEmpruntOperation">
+            <documentation>Marquer le retour de l'emprunt en base</documentation>
+            <ioSpecification>
+                <dataInput itemSubjectRef="process:retournerEmpruntItem" id="dataInputOfRetournerLivre"/>
+                <inputSet>
+                    <dataInputRefs>dataInputOfRetournerLivre</dataInputRefs>
+                </inputSet>
+                <outputSet/>
+            </ioSpecification>
+
+            <dataInputAssociation>
+                <targetRef>dataInputOfRetournerLivre</targetRef>
+                <assignment>
+                    <from>${livre}</from>
+                    <to>${dataInputOfRetournerLivre.livre}</to>
+                </assignment>
+                <assignment>
+                    <from>${utilisateur}</from>
+                    <to>${dataInputOfRetournerLivre.utilisateur}</to>
+                </assignment>
+            </dataInputAssociation>
+        </serviceTask>
+        <serviceTask id="notifier-retour-task" name="notifier retour au processus parent" implementation="##WebService"
+                     operationRef="process:notifierRetourParentOperation">
+            <documentation>Notifier le processus emprunt du retour</documentation>
+            <ioSpecification>
+                <dataInput itemSubjectRef="process:notifierRetourParentItem" id="dataInputOfNotifierLeRetour"/>
+                <inputSet>
+                    <dataInputRefs>dataInputOfNotifierLeRetour</dataInputRefs>
+                </inputSet>
+                <outputSet/>
+            </ioSpecification>
+
+            <dataInputAssociation>
+                <targetRef>dataInputOfNotifierLeRetour</targetRef>
+                <assignment>
+                    <from>${processInstanceIdCallback}</from>
+                    <to>${dataInputOfNotifierLeRetour.processInstanceIdParent}</to>
+                </assignment>
+            </dataInputAssociation>
+        </serviceTask>
+        <endEvent id="fin-retour">
+            <terminateEventDefinition/>
+        </endEvent>
+        <sequenceFlow id="sid-7B98FF37-F83E-410E-BD3B-2020A812DE2B" sourceRef="demarrer-retour" targetRef="enregistrer-retour-task"/>
+        <sequenceFlow id="sid-AEA74AD1-608D-4C29-A5A3-F0B6F7CDC2FB" sourceRef="enregistrer-retour-task" targetRef="notifier-retour-task"/>
+        <sequenceFlow id="sid-04F2D4E3-5030-497E-A671-0C5419A82B12" sourceRef="notifier-retour-task" targetRef="fin-retour"/>
+    </process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_Collaboration">
+        <bpmndi:BPMNPlane bpmnElement="Collaboration" id="BPMNPlane_Collaboration">
+            <bpmndi:BPMNShape bpmnElement="processusRetour_p" id="BPMNShape_processusRetour">
+                <omgdc:Bounds height="250.0" width="600.0" x="30.0" y="0.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="sid-9ABEB5E2-5362-4DB9-8B4E-484DB0E0AEB9" id="BPMNShape_sid-9ABEB5E2-5362-4DB9-8B4E-484DB0E0AEB9">
+                <omgdc:Bounds height="250.0" width="570.0" x="60.0" y="0.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="demarrer-retour" id="BPMNShape_demarrer-retour">
+                <omgdc:Bounds height="30.0" width="30.5" x="82.75" y="97.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="enregistrer-retour-task" id="BPMNShape_enregistrer-retour-task">
+                <omgdc:Bounds height="80.0" width="100.0" x="177.0" y="72.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="notifier-retour-task" id="BPMNShape_notifier-retour-task">
+                <omgdc:Bounds height="80.0" width="100.0" x="369.0" y="72.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="fin-retour" id="BPMNShape_fin-retour">
+                <omgdc:Bounds height="28.0" width="28.0" x="555.0" y="98.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge bpmnElement="sid-7B98FF37-F83E-410E-BD3B-2020A812DE2B" id="BPMNEdge_sid-7B98FF37-F83E-410E-BD3B-2020A812DE2B"
+                             flowable:sourceDockerX="15.5" flowable:sourceDockerY="15.0" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+                <omgdi:waypoint x="113.69999878325288" y="112.0"/>
+                <omgdi:waypoint x="177.0" y="112.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-AEA74AD1-608D-4C29-A5A3-F0B6F7CDC2FB" id="BPMNEdge_sid-AEA74AD1-608D-4C29-A5A3-F0B6F7CDC2FB"
+                             flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+                <omgdi:waypoint x="276.95000000000005" y="112.0"/>
+                <omgdi:waypoint x="369.0" y="112.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-04F2D4E3-5030-497E-A671-0C5419A82B12" id="BPMNEdge_sid-04F2D4E3-5030-497E-A671-0C5419A82B12"
+                             flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+                <omgdi:waypoint x="468.95000000000005" y="112.0"/>
+                <omgdi:waypoint x="555.0" y="112.0"/>
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</definitions>

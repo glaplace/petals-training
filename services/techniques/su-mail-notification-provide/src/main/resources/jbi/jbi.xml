@@ -10,7 +10,8 @@
     <jbi:services binding-component="false">
 
         <!-- Import a Service into Petals => provides a Service. -->
-        <jbi:provides interface-name="notifier:NotifierMail" service-name="notifier:NotifierMailService"
+        <jbi:provides interface-name="notifier:NotifierMail"
+                      service-name="notifier:NotifierMailService"
                       endpoint-name="autogenerate">
 
             <!-- CDK specific elements -->
@@ -24,7 +25,7 @@
             <mail:from>${ausy.training.mail.default.from}</mail:from>
             <mail:to>${ausy.training.mail.default.to}</mail:to>
             <mail:reply>${ausy.training.mail.default.from}</mail:reply>
-            <mail:content-type>text/html</mail:content-type>
+            <mail:content-type>text/html; charset=utf-8</mail:content-type>
         </jbi:provides>
     </jbi:services>
 </jbi:jbi>

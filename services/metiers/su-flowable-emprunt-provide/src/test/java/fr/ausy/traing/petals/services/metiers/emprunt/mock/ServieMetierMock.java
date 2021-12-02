@@ -51,7 +51,7 @@ public class ServieMetierMock extends ExternalResource implements Emprunter {
     }
 
     @Override
-    public void notifierRetourParent(final int processInstanceIdParent) throws PretInconnu {
+    public void notifierRetourParent(final long processInstanceIdParent) throws PretInconnu {
         notifierParentAppelee = true;
         if (this.processInstanceIdParent == processInstanceIdParent) {
             throw new WebServiceException(
