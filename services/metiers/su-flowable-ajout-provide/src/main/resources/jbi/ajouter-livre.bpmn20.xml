@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://flowable.org/test" exporter="Flowable Open Source Modeler" exporterVersion="6.7.1">
+  <collaboration id="Collaboration">
+    <participant id="processusAjoutId" name="Ajouter un livre depuis ISBN" processRef="processAjout"/>
+  </collaboration>
+  <message id="startEventMessage" name="startEventMessage"/>
+
+  <process id="processAjout" name="Ajouter un livre depuis ISBN" isExecutable="true">
+    <laneSet id="laneSet_processAjout">
+      <lane id="sid-6B22E1CA-A3D3-4932-BEFB-6F041F4395C2">
+        <flowNodeRef>startEvent</flowNodeRef>
+        <flowNodeRef>livreExisteTask</flowNodeRef>
+        <flowNodeRef>sid-1B8E318C-13EC-41E0-B7FB-D165BBEF22AA</flowNodeRef>
+        <flowNodeRef>ObtenirLivreTask</flowNodeRef>
+        <flowNodeRef>sauvegarderLivreTask</flowNodeRef>
+        <flowNodeRef>notifierDoublonTask</flowNodeRef>
+        <flowNodeRef>sid-A228FF91-2E3F-40C6-AD8A-23601162FF05</flowNodeRef>
+        <flowNodeRef>sid-1C3846C8-40F0-4B5D-9AC5-BB8B88A2ED8E</flowNodeRef>
+        <flowNodeRef>sid-E9B9DA77-814F-4053-AE78-7018AB4CB81E</flowNodeRef>
+        <flowNodeRef>sid-30F54E75-9F1B-4640-A5C6-C21B716596E3</flowNodeRef>
+        <flowNodeRef>sid-97B32287-1134-4EF4-A045-4523FD0F574C</flowNodeRef>
+        <flowNodeRef>sid-8AE84622-24AF-4469-9ABB-D54DC0FED417</flowNodeRef>
+        <flowNodeRef>sid-434A3589-1744-4339-93C9-C45BC79EB523</flowNodeRef>
+        <flowNodeRef>sid-86455A44-662A-4E4E-993D-5595B3D1A031</flowNodeRef>
+        <flowNodeRef>sid-D7D99812-569F-426B-B9A6-AD7227BD60AF</flowNodeRef>
+      </lane>
+    </laneSet>
+    <dataObject id="livre" name="livre" itemSubjectRef="xsd:json"/>
+    <dataObject id="livreExiste" name="livreExiste" itemSubjectRef="xsd:boolean">
+      <extensionElements>
+        <flowable:value>false</flowable:value>
+      </extensionElements>
+    </dataObject>
+    <startEvent id="startEvent" name="startEvent" isInterrupting="true">
+        <extensionElements>
+            <flowable:formProperty id="isbn" name="isbn" type="string" required="true"/>
+        </extensionElements>
+      <messageEventDefinition messageRef="startEventMessage"/>
+    </startEvent>
+    <serviceTask id="livreExisteTask" name="Livre existe déjà ?">
+      <documentation>Vérifie si l'isbn est déjà présent en base.</documentation>
+    </serviceTask>
+    <exclusiveGateway id="sid-1B8E318C-13EC-41E0-B7FB-D165BBEF22AA" default="sid-86455A44-662A-4E4E-993D-5595B3D1A031"/>
+    <serviceTask id="ObtenirLivreTask" name="Obtenir information livre">
+      <documentation>Obtenir un livre depuis OpenLibrary</documentation>
+    </serviceTask>
+    <serviceTask id="sauvegarderLivreTask" name="Sauvegarder livre">
+      <documentation>Sauvegarder le livre en base</documentation>
+    </serviceTask>
+    <serviceTask id="notifierDoublonTask" name="Notifier livre existant">
+      <documentation>Notifier la tentative d'insertion de doublon</documentation>
+    </serviceTask>
+    <endEvent id="sid-A228FF91-2E3F-40C6-AD8A-23601162FF05">
+      <errorEventDefinition flowable:errorVariableLocalScope="true" flowable:errorVariableTransient="true"/>
+    </endEvent>
+    <endEvent id="sid-1C3846C8-40F0-4B5D-9AC5-BB8B88A2ED8E">
+      <terminateEventDefinition/>
+    </endEvent>
+    <sequenceFlow id="sid-E9B9DA77-814F-4053-AE78-7018AB4CB81E" sourceRef="notifierDoublonTask" targetRef="sid-A228FF91-2E3F-40C6-AD8A-23601162FF05"/>
+    <sequenceFlow id="sid-30F54E75-9F1B-4640-A5C6-C21B716596E3" sourceRef="startEvent" targetRef="livreExisteTask"/>
+    <sequenceFlow id="sid-97B32287-1134-4EF4-A045-4523FD0F574C" sourceRef="livreExisteTask" targetRef="sid-1B8E318C-13EC-41E0-B7FB-D165BBEF22AA"/>
+    <sequenceFlow id="sid-8AE84622-24AF-4469-9ABB-D54DC0FED417" sourceRef="ObtenirLivreTask" targetRef="sauvegarderLivreTask"/>
+    <sequenceFlow id="sid-434A3589-1744-4339-93C9-C45BC79EB523" sourceRef="sauvegarderLivreTask" targetRef="sid-1C3846C8-40F0-4B5D-9AC5-BB8B88A2ED8E"/>
+    <sequenceFlow id="sid-86455A44-662A-4E4E-993D-5595B3D1A031" sourceRef="sid-1B8E318C-13EC-41E0-B7FB-D165BBEF22AA" targetRef="notifierDoublonTask"/>
+    <sequenceFlow id="sid-D7D99812-569F-426B-B9A6-AD7227BD60AF" sourceRef="sid-1B8E318C-13EC-41E0-B7FB-D165BBEF22AA" targetRef="ObtenirLivreTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${livreExiste}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Collaboration">
+    <bpmndi:BPMNPlane bpmnElement="Collaboration" id="BPMNPlane_Collaboration">
+      <bpmndi:BPMNShape bpmnElement="processusAjoutId" id="BPMNShape_processusAjoutId">
+        <omgdc:Bounds height="216.2897935706544" width="731.5781971294602" x="16.835017348564563" y="50.50505204569369"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-6B22E1CA-A3D3-4932-BEFB-6F041F4395C2" id="BPMNShape_sid-6B22E1CA-A3D3-4932-BEFB-6F041F4395C2">
+        <omgdc:Bounds height="216.2897935706544" width="701.5781971294602" x="46.83501734856456" y="50.50505204569369"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="startEvent" id="BPMNShape_startEvent">
+        <omgdc:Bounds height="30.000000000000014" width="30.5" x="67.22456762455329" y="93.91012514911765"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="livreExisteTask" id="BPMNShape_livreExisteTask">
+        <omgdc:Bounds height="80.00000000000001" width="99.99999999999999" x="132.4694673253381" y="68.91012514911765"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-1B8E318C-13EC-41E0-B7FB-D165BBEF22AA" id="BPMNShape_sid-1B8E318C-13EC-41E0-B7FB-D165BBEF22AA">
+        <omgdc:Bounds height="40.000000000000014" width="39.999999999999986" x="285.5150786542712" y="88.91012514911765"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="ObtenirLivreTask" id="BPMNShape_ObtenirLivreTask">
+        <omgdc:Bounds height="80.0" width="99.99999999999999" x="393.66221036083533" y="68.91012514911766"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sauvegarderLivreTask" id="BPMNShape_sauvegarderLivreTask">
+        <omgdc:Bounds height="80.00000000000001" width="100.00000000000004" x="554.8702542939782" y="68.91012514911765"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="notifierDoublonTask" id="BPMNShape_notifierDoublonTask">
+        <omgdc:Bounds height="80.00000000000001" width="99.99999999999999" x="393.66221036083533" y="168.38977251292414"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-A228FF91-2E3F-40C6-AD8A-23601162FF05" id="BPMNShape_sid-A228FF91-2E3F-40C6-AD8A-23601162FF05">
+        <omgdc:Bounds height="28.000000000000014" width="28.000000000000043" x="700.0236642020361" y="194.38977251292414"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-1C3846C8-40F0-4B5D-9AC5-BB8B88A2ED8E" id="BPMNShape_sid-1C3846C8-40F0-4B5D-9AC5-BB8B88A2ED8E">
+        <omgdc:Bounds height="28.000000000000014" width="28.000000000000043" x="700.0236642020358" y="94.91012514911765"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sid-30F54E75-9F1B-4640-A5C6-C21B716596E3" id="BPMNEdge_sid-30F54E75-9F1B-4640-A5C6-C21B716596E3" flowable:sourceDockerX="15.5" flowable:sourceDockerY="15.000000000000004" flowable:targetDockerX="50.000000000000014" flowable:targetDockerY="40.00000000000001">
+        <omgdi:waypoint x="98.17456559774206" y="108.91012514911765"/>
+        <omgdi:waypoint x="132.4694673253381" y="108.91012514911765"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-D7D99812-569F-426B-B9A6-AD7227BD60AF" id="BPMNEdge_sid-D7D99812-569F-426B-B9A6-AD7227BD60AF" flowable:sourceDockerX="20.5" flowable:sourceDockerY="20.500000000000004" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="325.0272111002738" y="109.34085647479841"/>
+        <omgdi:waypoint x="393.66221036083533" y="109.09156736073774"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-E9B9DA77-814F-4053-AE78-7018AB4CB81E" id="BPMNEdge_sid-E9B9DA77-814F-4053-AE78-7018AB4CB81E" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="14.029144411113268" flowable:targetDockerY="14.113816615714821">
+        <omgdi:waypoint x="493.612210360784" y="208.41079816985044"/>
+        <omgdi:waypoint x="700.0236642020361" y="208.4976837842822"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-97B32287-1134-4EF4-A045-4523FD0F574C" id="BPMNEdge_sid-97B32287-1134-4EF4-A045-4523FD0F574C" flowable:sourceDockerX="50.000000000000014" flowable:sourceDockerY="40.00000000000001" flowable:targetDockerX="20.0" flowable:targetDockerY="20.000000000000004">
+        <omgdi:waypoint x="232.41946732533808" y="108.91012514911765"/>
+        <omgdi:waypoint x="285.5150786542712" y="108.91012514911765"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-434A3589-1744-4339-93C9-C45BC79EB523" id="BPMNEdge_sid-434A3589-1744-4339-93C9-C45BC79EB523" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="14.155109575610023" flowable:targetDockerY="14.098381527021647">
+        <omgdi:waypoint x="654.8202542939725" y="108.95508191276191"/>
+        <omgdi:waypoint x="700.0236642020358" y="108.99576658288342"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-8AE84622-24AF-4469-9ABB-D54DC0FED417" id="BPMNEdge_sid-8AE84622-24AF-4469-9ABB-D54DC0FED417" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="493.6122103607978" y="108.91012514911766"/>
+        <omgdi:waypoint x="554.8702542939465" y="108.91012514911765"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-86455A44-662A-4E4E-993D-5595B3D1A031" id="BPMNEdge_sid-86455A44-662A-4E4E-993D-5595B3D1A031" flowable:sourceDockerX="20.5" flowable:sourceDockerY="20.500000000000004" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="306.0150786542712" y="128.3505621356713"/>
+        <omgdi:waypoint x="306.0150786542712" y="208.38977251292414"/>
+        <omgdi:waypoint x="393.66221036083533" y="208.38977251292414"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

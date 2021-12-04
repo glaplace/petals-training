@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+   <bean id="processEngineConfiguration" class="org.flowable.engine.impl.cfg.StandaloneInMemProcessEngineConfiguration">
+      <!-- Needed for timers! -->
+      <property name="asyncExecutorActivate" value="true" />
+      <property name="asyncExecutor" ref="asyncExecutor" />
+   </bean>
+
+   <bean id="asyncExecutor" class="org.flowable.job.service.impl.asyncexecutor.DefaultAsyncJobExecutor">
+      <property name="defaultAsyncJobAcquireWaitTimeInMillis" value="1000" />
+      <property name="defaultTimerJobAcquireWaitTimeInMillis" value="1000" />
+   </bean>
+
+</beans>

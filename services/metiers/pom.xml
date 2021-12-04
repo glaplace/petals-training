@@ -17,6 +17,7 @@
         <module>su-camel-livre-provide</module>
         <module>su-flowable-emprunt-provide</module>
         <module>su-soap-processus-emprunter-consume</module>
+        <module>su-flowable-ajout-provide</module>
     </modules>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

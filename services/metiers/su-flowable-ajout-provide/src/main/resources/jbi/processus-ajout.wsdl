@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<wsdl:definitions
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:bpmn="http://petals.ow2.org/se/flowable/annotations/1.0"
+    targetNamespace="http://ausy.fr/training/petals/bibliotheque/ajouter/metier/1.0"
+    xmlns:tns="http://ausy.fr/training/petals/bibliotheque/ajouter/metier/1.0"
+>
+
+    <wsdl:types>
+        <xsd:schema
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://ausy.fr/training/petals/bibliotheque/ajouter/metier/1.0">
+
+            <xsd:element name="ajouter">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="isbn" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="ajouterReponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="processInstanceId" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="ajouter">
+        <wsdl:part name="parameters" element="tns:ajouter"/>
+    </wsdl:message>
+    <wsdl:message name="ajouterReponse">
+        <wsdl:part name="parameters" element="tns:ajouterReponse"/>
+    </wsdl:message>
+
+    <wsdl:portType name="Ajouter">
+        <wsdl:operation name="ajouter">
+            <wsdl:documentation>Démarrer le processus d'ajout d'un livre.</wsdl:documentation>
+            <wsdl:input message="tns:ajouter"/>
+            <wsdl:output message="tns:ajouterReponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="AjouterSoapBinding" type="tns:Ajouter">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="ajouter">
+            <soap:operation soapAction="http://ausy.fr/training/petals/bibliotheque/ajouter/metier/1.0/ajouter"
+                            style="document"/>
+            <bpmn:operation processDefinitionId="processAjout" action="startEvent"
+                            start-event-message-name="startEventMessage"/>
+            <bpmn:variable name="isbn">/*[local-name()='ajouter']/*[local-name()='isbn']</bpmn:variable>
+
+            <bpmn:output>demarrerAjoutResponse.xsl</bpmn:output>
+
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="EmprunterService">
+        <wsdl:port name="autogenerate" binding="tns:AjouterSoapBinding">
+            <soap:address
+                location="petals:///{http://ausy.fr/training/petals/bibliotheque/ajouter/metier/1.0}AjouterService"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

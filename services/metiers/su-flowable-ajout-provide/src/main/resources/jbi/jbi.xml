@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<jbi:jbi
+    xmlns:jbi="http://java.sun.com/xml/ns/jbi"
+    xmlns:cdk="http://petals.ow2.org/components/extensions/version-5"
+    xmlns:petals-se-flowable="http://petals.ow2.org/components/petals-se-flowable/1.0"
+    xmlns:metier="http://ausy.fr/training/petals/bibliotheque/ajouter/metier/1.0"
+    xmlns:technique="http://ausy.fr/training/petals/bibliotheque/ajouter/technique/1.0"
+    xmlns:notifier="http://ausy.fr/training/petals/modele/bibliotheque/notifier/1.0"
+    version="1.0">
+
+    <jbi:services binding-component="false">
+
+        <jbi:provides
+            interface-name="metier:Ajouter"
+            service-name="metier:AjouterService"
+            endpoint-name="autogenerate">
+            <!-- WSDL file -->
+            <cdk:wsdl>processus-ajout.wsdl</cdk:wsdl>
+        </jbi:provides>
+
+        <!-- SE Flowable specific fields -->
+        <petals-se-flowable:tenant_id>ausy-training</petals-se-flowable:tenant_id>
+        <petals-se-flowable:category_id>biblitotheque</petals-se-flowable:category_id>
+
+        <!-- Processus Ajout -->
+        <petals-se-flowable:process_file1>ajouter-livre.bpmn20.xml</petals-se-flowable:process_file1>
+        <petals-se-flowable:version1>1</petals-se-flowable:version1>
+
+
+    </jbi:services>
+</jbi:jbi>

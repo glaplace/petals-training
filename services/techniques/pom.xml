@@ -23,6 +23,7 @@
         <module>su-soap-notifier-consume</module>
         <module>su-camel-emprunter-provide</module>
         <module>su-soap-emprunter-consume</module>
+        <module>su-camel-ajout-provide</module>
     </modules>
 
     <properties>

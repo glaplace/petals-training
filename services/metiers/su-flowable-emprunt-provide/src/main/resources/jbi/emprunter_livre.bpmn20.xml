@@ -182,7 +182,6 @@
                     <to>${dataInputOfNotifierEmpruntImpossible.sujet}</to>
                 </assignment>
                 <assignment>
-                    <!-- FIXME voir si ça fonctionne sinon voir avec concat O_o -->
                     <from>${''.format('Le livre %d est déjà emprunté', livre)}</from>
                     <to>${dataInputOfNotifierEmpruntImpossible.message}</to>
                 </assignment>

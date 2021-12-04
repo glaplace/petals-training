@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<wsdl:definitions
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    targetNamespace="http://ausy.fr/training/petals/bibliotheque/ajouter/technique/1.0"
+    xmlns:tns="http://ausy.fr/training/petals/bibliotheque/ajouter/technique/1.0"
+    xmlns:camel="http://petals.ow2.org/components/petals-se-camel/wsdl/version-1.0"
+    xmlns:modele="http://ausy.fr/training/petals/modele/bibliotheque/1.0"
+    name="AjouterLivre">
+    <wsdl:types>
+        <xsd:schema elementFormDefault="qualified"
+                    targetNamespace="http://ausy.fr/training/petals/bibliotheque/ajouter/technique/1.0">
+            <xsd:import namespace="http://ausy.fr/training/petals/modele/bibliotheque/1.0"
+                        schemaLocation="modele-bibliotheque.xsd"/>
+            <xsd:element name="livreExiste">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="identifiant" type="xsd:long"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="livreExisteReponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="existe" type="xsd:boolean"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="obtenirLivre">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="isbn" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="obtenirLivreReponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element ref="modele:livre"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="sauvegarderLivre">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element ref="modele:livre"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="livreExiste">
+        <wsdl:part name="parameters" element="tns:livreExiste"/>
+    </wsdl:message>
+    <wsdl:message name="livreExisteReponse">
+        <wsdl:part name="parameters" element="tns:livreExisteReponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="obtenirLivre">
+        <wsdl:part name="parameters" element="tns:obtenirLivre"/>
+    </wsdl:message>
+    <wsdl:message name="obtenirLivreReponse">
+        <wsdl:part name="parameters" element="tns:obtenirLivreReponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="sauvegarderLivre">
+        <wsdl:part name="parameters" element="tns:sauvegarderLivre"/>
+    </wsdl:message>
+
+
+    <wsdl:portType name="AjouterLivreTechnique">
+        <wsdl:operation name="livreExiste">
+            <wsdl:input message="tns:livreExiste"/>
+            <wsdl:output message="tns:livreExisteReponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="obtenirLivre">
+            <wsdl:input message="tns:obtenirLivre"/>
+            <wsdl:output message="tns:obtenirLivreReponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="sauvegarderLivre">
+            <wsdl:input message="tns:sauvegarderLivre"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="AjouterLivreTechniqueSoapBinding" type="tns:AjouterLivreTechnique">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="livreExiste">
+            <camel:operation service-id="livreExiste"/>
+            <soap:operation
+                soapAction="http://ausy.fr/training/petals/bibliotheque/ajouter/1.0/technique/livreExiste"
+                style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="obtenirLivre">
+            <camel:operation service-id="obtenirLivre"/>
+            <soap:operation
+                soapAction="http://ausy.fr/training/petals/bibliotheque/ajouter/1.0/technique/obtenirLivre"
+                style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="sauvegarderLivre">
+            <camel:operation service-id="sauvegarderLivre"/>
+            <soap:operation
+                soapAction="http://ausy.fr/training/petals/bibliotheque/ajouter/1.0/technique/sauvegarderLivre"
+                style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="AjouterlLivreService">
+        <wsdl:port name="autogenerate" binding="tns:AjouterLivreTechniqueSoapBinding">
+            <soap:address location="jbi://autogenerate"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
