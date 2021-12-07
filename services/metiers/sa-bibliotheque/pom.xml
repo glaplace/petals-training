@@ -24,27 +24,45 @@
             <version>${project.version}</version>
             <type>jbi-service-unit</type>
         </dependency>
+
         <dependency>
             <groupId>fr.ausy.traing.petals.services.techniques</groupId>
             <artifactId>su-rest-openlibrary-provide</artifactId>
             <version>${project.version}</version>
             <type>jbi-service-unit</type>
         </dependency>
+
         <dependency>
             <groupId>fr.ausy.traing.petals.services.techniques</groupId>
             <artifactId>su-mail-notification-provide</artifactId>
             <version>${project.version}</version>
             <type>jbi-service-unit</type>
         </dependency>
+
         <dependency>
             <groupId>fr.ausy.traing.petals.services.techniques</groupId>
             <artifactId>su-camel-emprunter-provide</artifactId>
             <version>${project.version}</version>
             <type>jbi-service-unit</type>
         </dependency>
+
         <dependency>
             <groupId>fr.ausy.traing.petals.services.metiers</groupId>
             <artifactId>su-flowable-emprunt-provide</artifactId>
+            <version>${project.version}</version>
+            <type>jbi-service-unit</type>
+        </dependency>
+
+        <dependency>
+            <groupId>fr.ausy.traing.petals.services.techniques</groupId>
+            <artifactId>su-camel-ajout-provide</artifactId>
+            <version>${project.version}</version>
+            <type>jbi-service-unit</type>
+        </dependency>
+
+        <dependency>
+            <groupId>fr.ausy.traing.petals.services.metiers</groupId>
+            <artifactId>su-flowable-ajout-provide</artifactId>
             <version>${project.version}</version>
             <type>jbi-service-unit</type>
         </dependency>

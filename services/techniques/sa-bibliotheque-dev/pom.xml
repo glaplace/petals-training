@@ -23,27 +23,45 @@
             <version>${project.version}</version>
             <type>jbi-service-unit</type>
         </dependency>
+
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>su-soap-openlibrary-consume</artifactId>
             <version>${project.version}</version>
             <type>jbi-service-unit</type>
         </dependency>
+
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>su-soap-notifier-consume</artifactId>
             <version>${project.version}</version>
             <type>jbi-service-unit</type>
         </dependency>
+
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>su-soap-emprunter-consume</artifactId>
             <version>${project.version}</version>
             <type>jbi-service-unit</type>
         </dependency>
+
         <dependency>
             <groupId>fr.ausy.traing.petals.services.metiers</groupId>
             <artifactId>su-soap-processus-emprunter-consume</artifactId>
+            <version>${project.version}</version>
+            <type>jbi-service-unit</type>
+        </dependency>
+
+        <dependency>
+            <groupId>fr.ausy.traing.petals.services.techniques</groupId>
+            <artifactId>su-soap-ajouter-processus-consume</artifactId>
+            <version>${project.version}</version>
+            <type>jbi-service-unit</type>
+        </dependency>
+
+        <dependency>
+            <groupId>fr.ausy.traing.petals.services.techniques</groupId>
+            <artifactId>su-soap-ajouter-technique-consume</artifactId>
             <version>${project.version}</version>
             <type>jbi-service-unit</type>
         </dependency>

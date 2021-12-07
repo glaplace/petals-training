@@ -24,6 +24,8 @@
         <module>su-camel-emprunter-provide</module>
         <module>su-soap-emprunter-consume</module>
         <module>su-camel-ajout-provide</module>
+        <module>su-soap-ajouter-technique-consume</module>
+        <module>su-soap-ajouter-processus-consume</module>
     </modules>
 
     <properties>

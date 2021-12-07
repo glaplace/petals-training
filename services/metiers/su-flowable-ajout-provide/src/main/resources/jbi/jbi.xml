@@ -19,6 +19,33 @@
             <cdk:wsdl>processus-ajout.wsdl</cdk:wsdl>
         </jbi:provides>
 
+        <jbi:consumes interface-name="notifier:NotifierMail"
+                      service-name="notifier:NotifierMailService">
+            <cdk:mep>InOut</cdk:mep>
+            <cdk:operation>notifier:notifier</cdk:operation>
+            <cdk:timeout>360000</cdk:timeout>
+        </jbi:consumes>
+
+        <jbi:consumes interface-name="technique:AjouterLivreTechnique"
+                      service-name="technique:AjouterlLivreService">
+            <cdk:mep>InOut</cdk:mep>
+            <cdk:operation>technique:livreExiste</cdk:operation>
+            <cdk:timeout>360000</cdk:timeout>
+        </jbi:consumes>
+        <jbi:consumes interface-name="technique:AjouterLivreTechnique"
+                      service-name="technique:AjouterlLivreService">
+            <cdk:mep>InOut</cdk:mep>
+            <cdk:operation>technique:obtenirLivre</cdk:operation>
+            <cdk:timeout>360000</cdk:timeout>
+        </jbi:consumes>
+
+        <jbi:consumes interface-name="technique:AjouterLivreTechnique"
+                      service-name="technique:AjouterlLivreService">
+            <cdk:mep>InOnly</cdk:mep>
+            <cdk:operation>technique:sauvegarderLivre</cdk:operation>
+            <cdk:timeout>360000</cdk:timeout>
+        </jbi:consumes>
+
         <!-- SE Flowable specific fields -->
         <petals-se-flowable:tenant_id>ausy-training</petals-se-flowable:tenant_id>
         <petals-se-flowable:category_id>biblitotheque</petals-se-flowable:category_id>

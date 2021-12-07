@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ol:obtenir-auteur-reponse xmlns:ol="http://cd35.fr/controle-legalite/1.0">
-    <ol:nom>David Gemmell</ol:nom>
+<ol:obtenir-auteur-reponse xmlns:ol="http://openlibrary.org/api/1.0">
+    <nom>David Gemmell</nom>
 </ol:obtenir-auteur-reponse>

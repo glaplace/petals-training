@@ -21,14 +21,14 @@
                 <xsl:value-of select="description/value"/>
             </xsl:element>
             <xsl:element name="modele:nb-page" namespace="{$modele}">
-                <xsl:value-of select="nb_page"/>
+                <xsl:value-of select="number_of_pages"/>
             </xsl:element>
             <xsl:element name="modele:isbn" namespace="{$modele}">
                 <xsl:value-of select="isbn_13"/>
             </xsl:element>
             <!-- référence vers le détails auteur -->
             <xsl:element name="modele:auteur" namespace="{$modele}">
-                <xsl:value-of select="authors[0]/key"/>
+                <xsl:value-of select="substring-after(authors/key, '/authors/')"/>
             </xsl:element>
             <xsl:element name="modele:langue" namespace="{$modele}">
                 <xsl:value-of select="publish_country"/>

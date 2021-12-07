@@ -4,16 +4,17 @@
     xmlns:cdk="http://petals.ow2.org/components/extensions/version-5"
     xmlns:jbi="http://java.sun.com/xml/ns/jbi"
     xmlns:camel="http://petals.ow2.org/components/petals-se-camel/jbi/version-1.0"
-    xmlns:emprunter="http://ausy.fr/training/petals/bibliotheque/emprunter/technique/1.0"
+    xmlns:ajouter="http://ausy.fr/training/petals/bibliotheque/ajouter/technique/1.0"
     xmlns:sql="http://petals.ow2.org/components/sql/version-1"
     xmlns:sql-bibli="http://ausy.fr/training/petals/modele/bibliotheque/1.0/sql"
+    xmlns:openlibrary="http://openlibrary.org/api/1.0"
     version="1.0">
 
     <jbi:services binding-component="false">
-        <jbi:provides interface-name="emprunter:EmprunterLivreTechnique"
-                      service-name="emprunter:EmprunterlLivreService"
+        <jbi:provides interface-name="ajouter:AjouterLivreTechnique"
+                      service-name="ajouter:AjouterlLivreService"
                       endpoint-name="autogenerate">
-            <cdk:wsdl>emprunter-livre.wsdl</cdk:wsdl>
+            <cdk:wsdl>ajouter-livre.wsdl</cdk:wsdl>
         </jbi:provides>
 
         <jbi:consumes interface-name="sql:SQLInterface" service-name="sql-bibli:BibliothequeSQLService">
@@ -30,16 +31,23 @@
             <camel:service-id>sql-insert</camel:service-id>
         </jbi:consumes>
 
-        <jbi:consumes interface-name="sql:SQLInterface" service-name="sql-bibli:BibliothequeSQLService">
+        <jbi:consumes interface-name="openlibrary:Openlibrary" service-name="openlibrary:OpenlibraryService">
             <cdk:mep>InOut</cdk:mep>
-            <cdk:operation>sql:updateWithResponse</cdk:operation>
-            <cdk:timeout>360000</cdk:timeout>
-            <camel:service-id>sql-update</camel:service-id>
+            <cdk:operation>openlibrary:obtenir-par-isbn</cdk:operation>
+            <cdk:timeout>36000</cdk:timeout>
+            <camel:service-id>obtenir-livre-ol</camel:service-id>
         </jbi:consumes>
 
-        <camel:java-routes>fr.ausy.traing.petals.services.techniques.emprunter.operation.AjouterEmpruntOperation</camel:java-routes>
-        <camel:java-routes>fr.ausy.traing.petals.services.techniques.emprunter.operation.EnregistrerRetourOperation</camel:java-routes>
-        <camel:java-routes>fr.ausy.traing.petals.services.techniques.emprunter.operation.LivreDejaEmprunteOperation</camel:java-routes>
+        <jbi:consumes interface-name="openlibrary:Openlibrary" service-name="openlibrary:OpenlibraryService">
+            <cdk:mep>InOut</cdk:mep>
+            <cdk:operation>openlibrary:obtenir-auteur</cdk:operation>
+            <cdk:timeout>36000</cdk:timeout>
+            <camel:service-id>obtenir-auteur-ol</camel:service-id>
+        </jbi:consumes>
+
+        <camel:java-routes>fr.ausy.traing.petals.services.techniques.ajouter.operation.LivreExisteOperation</camel:java-routes>
+        <camel:java-routes>fr.ausy.traing.petals.services.techniques.ajouter.operation.ObtenirLivreOperation</camel:java-routes>
+        <camel:java-routes>fr.ausy.traing.petals.services.techniques.ajouter.operation.SauvegarderLivreOperation</camel:java-routes>
 
     </jbi:services>
 </jbi:jbi>

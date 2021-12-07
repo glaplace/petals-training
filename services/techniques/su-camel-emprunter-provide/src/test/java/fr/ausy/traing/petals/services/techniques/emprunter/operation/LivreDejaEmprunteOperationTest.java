@@ -53,13 +53,13 @@ public class LivreDejaEmprunteOperationTest extends AbstractOperationTest {
         assertFalse(PetalsRouteBuilder.isJbiFault(exchange.getOut()));
 
         final LivreEstDejaEmprunteReponse reponse = service.unmarshal(exchange.getOut(), LivreEstDejaEmprunteReponse.class);
-        final LivreEstDejaEmprunteReponse reponseAttendu = new LivreEstDejaEmprunteReponse();
-        reponseAttendu.setDejaEmprunter(!estDisponible);
+        final LivreEstDejaEmprunteReponse reponseAttendue = new LivreEstDejaEmprunteReponse();
+        reponseAttendue.setDejaEmprunter(!estDisponible);
 
         org.assertj.core.api.Assertions.assertThat(reponse)
             .isNotNull()
             .usingRecursiveComparison()
-            .isEqualTo(reponseAttendu);
+            .isEqualTo(reponseAttendue);
     }
 
     /**

@@ -8,6 +8,8 @@ import org.ow2.petals.components.sql.version_1.ObjectFactory;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
+import java.util.Objects;
+
 public abstract class AbstractOperation extends PetalsRouteBuilder {
     protected static final ObjectFactory SQL_OBJECT_FACTORY = new ObjectFactory();
     /**
@@ -58,6 +60,78 @@ public abstract class AbstractOperation extends PetalsRouteBuilder {
         }
     }
 
+    protected static String escapeString(final String x) {
+        return escapeString(x, false);
+    }
+
+    /**
+     * Échappement des caractères spéciaux SQL.
+     * si {@code x} est null retourne null
+     *
+     * @param x
+     * @param escapeDoubleQuotes
+     * @return la chaine de caractère échappée
+     */
+    protected static String escapeString(final String x, final boolean escapeDoubleQuotes) {
+        if (Objects.isNull(x)) {
+            return null;
+        }
+        final StringBuilder sBuilder = new StringBuilder(x.length() * 11 / 10);
+
+        final int stringLength = x.length();
+
+        for (int i = 0; i < stringLength; ++i) {
+            final char c = x.charAt(i);
+
+            switch (c) {
+                case 0: /* Must be escaped for 'mysql' */
+                    sBuilder.append('\\');
+                    sBuilder.append('0');
+                    break;
+
+                case '\n': /* Must be escaped for logs */
+                    sBuilder.append('\\');
+                    sBuilder.append('n');
+                    break;
+
+                case '\r':
+                    sBuilder.append('\\');
+                    sBuilder.append('r');
+                    break;
+
+                case '\\':
+                    sBuilder.append('\\');
+                    sBuilder.append('\\');
+                    break;
+
+                case '\'':
+                    sBuilder.append("''");
+                    break;
+
+                case '"': /* Better safe than sorry */
+                    if (escapeDoubleQuotes) {
+                        sBuilder.append('\\');
+                    }
+                    sBuilder.append('"');
+
+                    break;
+
+                case '\032': /* This gives problems on Win32 */
+                    sBuilder.append('\\');
+                    sBuilder.append('Z');
+                    break;
+
+                case '\u00a5':
+                case '\u20a9':
+                    // escape characters interpreted as backslash by mysql
+                    // fall through
+                default:
+                    sBuilder.append(c);
+            }
+        }
+        return sBuilder.toString();
+    }
+
     /**
      * Création du contexte JAXB commun à toutes les opérations.
      *
@@ -66,6 +140,7 @@ public abstract class AbstractOperation extends PetalsRouteBuilder {
      */
     private static JAXBContext createJaxbContext() throws JAXBException {
         return JAXBContext.newInstance(
+            org.openlibrary.api._1.ObjectFactory.class,
             org.ow2.petals.components.sql.version_1.Result.class,
             fr.ausy.training.petals.bibliotheque.ajouter.technique._1.ObjectFactory.class
         );

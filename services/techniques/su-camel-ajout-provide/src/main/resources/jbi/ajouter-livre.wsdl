@@ -18,7 +18,7 @@
             <xsd:element name="livreExiste">
                 <xsd:complexType>
                     <xsd:sequence>
-                        <xsd:element name="identifiant" type="xsd:long"/>
+                        <xsd:element name="isbn" type="xsd:string"/>
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
@@ -39,10 +39,18 @@
                 </xsd:complexType>
             </xsd:element>
 
+            <xsd:element name="livreInconnu">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="isbn" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
             <xsd:element name="obtenirLivreReponse">
                 <xsd:complexType>
                     <xsd:sequence>
-                        <xsd:element ref="modele:livre"/>
+                        <xsd:element name="livre" type="modele:Livre"/>
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
@@ -50,7 +58,7 @@
             <xsd:element name="sauvegarderLivre">
                 <xsd:complexType>
                     <xsd:sequence>
-                        <xsd:element ref="modele:livre"/>
+                        <xsd:element name="livre" type="modele:Livre"/>
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>

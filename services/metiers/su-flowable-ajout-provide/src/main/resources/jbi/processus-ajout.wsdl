@@ -68,7 +68,7 @@
         </wsdl:operation>
     </wsdl:binding>
 
-    <wsdl:service name="EmprunterService">
+    <wsdl:service name="AjouterService">
         <wsdl:port name="autogenerate" binding="tns:AjouterSoapBinding">
             <soap:address
                 location="petals:///{http://ausy.fr/training/petals/bibliotheque/ajouter/metier/1.0}AjouterService"/>

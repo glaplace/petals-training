@@ -170,11 +170,11 @@
                             <target>
                                 <replace file="${basedir}/src/main/resources/jbi/ajouter-livre.wsdl">
                                     <replacefilter token="jbi://autogenerate"
-                                                   value="petals:///{http://ausy.fr/training/petals/modele/bibliotheque/ajouter/1.0}AjouterLivreTechnique"/>
+                                                   value="petals:///{http://ausy.fr/training/petals/bibliotheque/ajouter/technique/1.0}AjouterLivreTechnique"/>
                                 </replace>
                                 <replace file="${basedir}/src/main/resources/jbi/notifier-mail.wsdl">
                                     <replacefilter token="jbi://autogenerate"
-                                                   value="petals:///{ttp://ausy.fr/training/petals/modele/bibliotheque/notifier/1.0}NotifierMail"/>
+                                                   value="petals:///{http://ausy.fr/training/petals/modele/bibliotheque/notifier/1.0}NotifierMail"/>
                                 </replace>
                             </target>
                         </configuration>

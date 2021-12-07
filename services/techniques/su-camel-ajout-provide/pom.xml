@@ -153,6 +153,14 @@
                                     <type>jbi-service-unit</type>
                                     <includes>SQLInterface.wsdl,bibliothequeSQLService.wsdl</includes>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>fr.ausy.traing.petals.services.techniques</groupId>
+                                    <artifactId>su-rest-openlibrary-provide</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>jbi-service-unit</type>
+                                    <outputDirectory>${basedir}/src/main/resources/jbi</outputDirectory>
+                                    <includes>openlibrary.wsdl</includes>
+                                </artifactItem>
                             </artifactItems>
                         </configuration>
                     </execution>
@@ -175,6 +183,7 @@
                                         <directory>${basedir}/src/main/resources/jbi</directory>
                                         <includes>
                                             <include>ajouter-livre.wsdl</include>
+                                            <include>openlibrary.wsdl</include>
                                         </includes>
                                     </fileset>
                                 </schema>
